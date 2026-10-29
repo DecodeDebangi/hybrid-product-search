@@ -1,4 +1,4 @@
-# Findwise relevance evaluation
+# Relevance evaluation
 
 Run 2026-10-29T10:57:31+00:00 on commit `2fcafd0`. 40 queries from `queries_attribute.json`, hybrid fusion `{'fusion': 'rrf'}`, extra parameters `{'typeAware': 'true'}`, metrics at k=10 (MRR within the top 50).
 

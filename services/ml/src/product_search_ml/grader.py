@@ -84,7 +84,7 @@ class Grade(BaseModel):
 
 
 def create_app(state: dict, only: set[str] | None = None) -> FastAPI:
-    app = FastAPI(title="findwise-grader")
+    app = FastAPI(title="product-search-grader")
     items = {item["key"]: item for item in state["items"]}
     shown = [item for item in state["items"] if only is None or item["key"] in only]
 

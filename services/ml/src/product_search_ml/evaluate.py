@@ -142,7 +142,7 @@ def summarize(rows: list[dict]) -> dict:
 def render_markdown(summary: dict, rows: list[dict], meta: dict) -> str:
     means = summary["means"]
     lines = [
-        "# Findwise relevance evaluation",
+        "# Relevance evaluation",
         "",
         f"Run {meta['timestamp']} on commit `{meta['commit']}`. "
         f"{meta['queries']} queries from `{meta['query_set']}`, hybrid fusion `{meta['fusion']}`, "

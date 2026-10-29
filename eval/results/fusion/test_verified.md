@@ -1,4 +1,4 @@
-# Findwise relevance evaluation
+# Relevance evaluation
 
 Run 2026-10-29T10:42:05+00:00 on commit `f0e778a`. 30 queries from `queries_test.json`, hybrid fusion `{'fusion': 'verified'}`, metrics at k=10 (MRR within the top 50).
 

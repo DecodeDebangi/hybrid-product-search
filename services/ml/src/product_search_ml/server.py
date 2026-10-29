@@ -29,7 +29,7 @@ async def lifespan(_: FastAPI):
     state.clear()
 
 
-app = FastAPI(title="findwise-embedder", lifespan=lifespan)
+app = FastAPI(title="product-search-embedder", lifespan=lifespan)
 
 
 class TextRequest(BaseModel):

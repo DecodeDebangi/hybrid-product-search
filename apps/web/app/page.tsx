@@ -114,7 +114,7 @@ export default function Home() {
       }}
     >
       <header className="header">
-        <h1>Findwise</h1>
+        <h1>Hybrid Product Search</h1>
         <p>
           Product search over 44k items: BM25, CLIP vectors, and hybrid ranking with Reciprocal Rank Fusion. Search by
           text, or drop an image anywhere.

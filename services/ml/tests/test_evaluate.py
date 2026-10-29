@@ -1,6 +1,6 @@
 import unittest
 
-from findwise_ml.evaluate import grade, score
+from product_search_ml.evaluate import grade, score
 
 QUERY = {"must": {"article_type": ["Watches"]}, "should": {"base_colour": ["Black"]}}
 

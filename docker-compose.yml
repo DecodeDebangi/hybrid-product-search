@@ -1,3 +1,5 @@
+name: hybrid-product-search
+
 services:
   solr:
     image: solr:9.7

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Findwise Grader</title>
+<title>Relevance Grader</title>
 <style>
   :root {
     --bg: #f7f7f5; --surface: #fff; --border: #e4e4e0; --text: #1c1c1a; --muted: #6b6b66;
@@ -78,7 +78,7 @@ function escapeHtml(s) {
 function render() {
   const done = graded();
   const header = `
-    <header><h1>Findwise relevance grading</h1><span class="count">${done} / ${items.length} graded</span></header>
+    <header><h1>Relevance grading</h1><span class="count">${done} / ${items.length} graded</span></header>
     <div class="bar"><div style="width:${(done / items.length) * 100}%"></div></div>`;
 
   if (index === -1) {

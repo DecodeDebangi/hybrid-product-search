@@ -2,7 +2,7 @@ import unittest
 
 from PIL import Image
 
-from findwise_ml.ingest import is_blank, to_doc
+from product_search_ml.ingest import is_blank, to_doc
 
 ROW = {
     "id": 1, "productDisplayName": "Watch", "gender": "Men", "masterCategory": "Accessories",

@@ -1,7 +1,7 @@
 import unittest
 from collections import Counter
 
-from findwise_ml.grader import build_sample, cohens_kappa
+from product_search_ml.grader import build_sample, cohens_kappa
 
 
 class KappaTest(unittest.TestCase):

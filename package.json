@@ -1,14 +1,14 @@
 {
-  "name": "findwise",
+  "name": "hybrid-product-search",
   "private": true,
   "scripts": {
     "infra:up": "docker compose up -d",
     "infra:down": "docker compose down",
-    "embedder": "cd services/ml && uv run findwise-embedder",
-    "ingest": "cd services/ml && uv run findwise-ingest",
-    "api": "pnpm --filter @findwise/api dev",
-    "web": "pnpm --filter @findwise/web dev",
-    "eval": "cd services/ml && uv run findwise-eval",
-    "grade": "cd services/ml && uv run findwise-grade"
+    "embedder": "cd services/ml && uv run product-search-embedder",
+    "ingest": "cd services/ml && uv run product-search-ingest",
+    "api": "pnpm --filter @hybrid-product-search/api dev",
+    "web": "pnpm --filter @hybrid-product-search/web dev",
+    "eval": "cd services/ml && uv run product-search-eval",
+    "grade": "cd services/ml && uv run product-search-grade"
   }
 }

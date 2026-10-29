@@ -1,8 +1,8 @@
-# Findwise
+# Hybrid Product Search
 
 Visual and semantic product search over a 44k-item fashion catalog. Search by text or by photo, and compare keyword (BM25), vector (CLIP) and hybrid ranking side by side.
 
-> Demo GIF: _coming soon_
+![Demo: keyword search finds nothing for "something warm for winter" while hybrid search finds beanies and scarves; then type-aware search, "more like this", and search by image](docs/demo.gif)
 
 ## What it shows
 
@@ -57,7 +57,7 @@ pnpm eval                      # relevance report → eval/results/latest.md
 pnpm grade                     # blind human grading UI on :8002; `pnpm grade --report` for agreement
 ```
 
-To pass flags to ingest: `cd services/ml && uv run findwise-ingest --limit 2000`.
+To pass flags to ingest: `cd services/ml && uv run product-search-ingest --limit 2000`.
 
 ## API
 
@@ -184,6 +184,7 @@ Full reports: [eval/results/type_detection](eval/results/type_detection).
 - [ ] Detect colour and gender too ("for men", "navy"), and add shopper synonyms ("trainers", "denims") to the type vocabulary
 - [ ] Per-query trust signal between BM25 and CLIP (e.g. score margins or a re-ranker), evaluated on a fresh held-out set
 - [ ] Cross-encoder or CLIP re-ranking stage on the fused top-50
+- [ ] Title embeddings as a third retriever, for occasion and style queries where 60×80 images can't separate a dress from a nightdress. Trade-off: CLIP's text tower is weak at text-to-text matching and BM25 already reads titles, so it needs a fresh query set to justify the extra signal
 - [ ] Dockerfiles for API, embedder and web, and a hosted demo
 - [ ] Load test (k6) and publish p50/p95 under concurrency
 
