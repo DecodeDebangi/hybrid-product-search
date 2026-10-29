@@ -7,6 +7,7 @@ from pathlib import Path
 
 import httpx
 from datasets import load_dataset
+from PIL import Image
 from tqdm import tqdm
 
 from .embedder import ClipEmbedder
@@ -22,7 +23,13 @@ def batched(iterable, size):
         yield batch
 
 
-def to_doc(row: dict, vector: list[float]) -> dict:
+def is_blank(image: Image.Image) -> bool:
+    """A single-colour image has no visual content; its embedding lands near every query (e.g. product 44998)."""
+    low, high = image.convert("L").getextrema()
+    return low == high
+
+
+def to_doc(row: dict, vector: list[float] | None) -> dict:
     year = row.get("year")
     doc = {
         "id": str(row["id"]),
@@ -69,7 +76,8 @@ def main():
                 if not path.exists():
                     row["image"].convert("RGB").save(path, quality=90)
             vectors = clip.embed_images([row["image"] for row in batch])
-            docs = [to_doc(row, vec) for row, vec in zip(batch, vectors)]
+            # Blank images stay searchable by keyword but get no vector, so they can't surface in visual results.
+            docs = [to_doc(row, None if is_blank(row["image"]) else vec) for row, vec in zip(batch, vectors)]
             solr.post("/update", params={"commitWithin": 10000}, json=docs).raise_for_status()
             indexed += len(docs)
             progress.update(len(batch))
