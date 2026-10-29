@@ -9,7 +9,8 @@ Visual and semantic product search over a 44k-item fashion catalog. Search by te
 - **Hybrid retrieval.** Solr BM25 and CLIP kNN run in parallel and are merged with **Reciprocal Rank Fusion**. Every result shows which retriever found it and at what rank.
 - **Cross-modal search.** One CLIP model embeds both text queries and product images into the same 512-d space, so "outfit for a beach wedding" finds products from their *pictures*, not their titles.
 - **Search by image and "More like this".** Upload a photo, or pivot from any product to its visual neighbours.
-- **Compare mode.** Lexical and hybrid results side by side, to see where keywords fail. For example, "black formal watch" returns formal *shoes* under BM25.
+- **Compare mode.** Lexical and hybrid results side by side, to see where keywords fail. For example, "something to carry my laptop in" finds nothing under BM25.
+- **Query understanding.** Detects the product type a query names ("black formal **watch**") so keyword search can't drift to whatever the modifiers match (formal *shoes*). The UI shows what was detected.
 - **Observability.** Per-request timing breakdown (embed / BM25 / kNN) and rolling p50/p95 latency per mode.
 
 ## Architecture
@@ -64,6 +65,7 @@ To pass flags to ingest: `cd services/ml && uv run findwise-ingest --limit 2000`
 | --- | --- | --- |
 | GET | `/api/search?q=&mode=lexical\|vector\|hybrid&gender=&articleType=&baseColour=&usage=&limit=` | Text search |
 | | `&fusion=rrf\|weighted\|verified&lexicalWeight=0.5` | Hybrid fusion strategy (default `rrf`); see [Fusion experiment](#fusion-experiment) |
+| | `&typeAware=true\|false` | Limit keyword matches to the product type named in the query (default `true`); see [Query understanding](#query-understanding) |
 | POST | `/api/search/image` (multipart `image`) | Search by image |
 | GET | `/api/products/:id/similar` | Visual neighbours of a product |
 | GET | `/api/facets` | Filter values with counts |
@@ -88,14 +90,14 @@ To pass flags to ingest: `cd services/ml && uv run findwise-ingest --limit 2000`
 
 | Query type | Example | Lexical | Vector | Hybrid |
 | --- | --- | --- | --- | --- |
-| Keyword (17) | "navy blue shirt" | 0.918 | 0.740 | **0.940** |
+| Keyword (17) | "navy blue shirt" | 0.930 | 0.740 | **0.943** |
 | Synonym (16) | "trainers", "billfold" | 0.539 | **0.897** | 0.837 |
 | Descriptive (17) | "something to carry my laptop in" | 0.158 | 0.689 | **0.704** |
-| **All (50)** | | 0.539 | 0.773 | **0.826** |
+| **All (50)** | | 0.543 | 0.773 | **0.828** |
 
-- **Hybrid improves nDCG@10 by 53% over BM25** (0.539 → 0.826) and by 7% over vector-only search. Head to head, hybrid beats or ties BM25 on 46 of 50 queries.
+- **Hybrid improves nDCG@10 by 52% over BM25** (0.543 → 0.828) and by 7% over vector-only search. Head to head, hybrid beats or ties BM25 on 46 of 50 queries.
 - **BM25 returns no results at all for 13 of 17 descriptive queries.** Its matching rule (edismax, `mm=2<75%`) needs most query terms to appear in the product text, and "something warm for winter" never does. CLIP matches the product image instead.
-- **Hybrid keeps BM25's precision on exact queries.** Vector-only search drops to 0.740 on keyword queries; hybrid reaches 0.940.
+- **Hybrid keeps BM25's precision on exact queries.** Vector-only search drops to 0.740 on keyword queries; hybrid reaches 0.943.
 - **Weakness: on synonym queries, hybrid loses to vector-only** (0.837 vs 0.897). For queries like "shades" and "denims", BM25 contributes off-topic matches and equal-weight RRF ranks them in. An attempt to fix this is written up under [Fusion experiment](#fusion-experiment) below; it didn't hold up on held-out queries.
 - **Failure case:** "light summer dress" in vector mode returns kurtas. In Indian catalog usage "dress" often means outfit, and CLIP follows that reading; hybrid recovers about half the loss.
 
@@ -115,6 +117,8 @@ In 9 of the 13 remaining disagreements, the automatic grader is **stricter** tha
 Run it yourself with `pnpm eval` (API and Solr running).
 
 ### Fusion experiment
+
+_Run before query understanding was added, so the RRF numbers here differ slightly from the table above._
 
 **Problem.** BM25 matches the right word in the wrong sense: "denims" → *Denim* brand deodorant, "trainers" → Puma *Trainer* footballs, "shades" → *Shaded* kurta. Equal-weight RRF ranks BM25's #1 near the top whatever it is.
 
@@ -137,6 +141,32 @@ Verification helps when BM25 is wrong and CLIP is right, and hurts by about as m
 
 Note on reproducibility: the very first run of a new query set can differ slightly in vector-only mode on a few queries. Every later run is identical, and all numbers above come from repeated runs. Hybrid scores matched across every run.
 
+### Query understanding
+
+**Problem.** For "black formal watch", BM25's matching rule needs only 2 of the 3 words. "Black formal" alone matches 1,885 products, mostly formal shoes, so plain hybrid search returned 5 shoes and 5 watches. The word that matters most, the product type, was treated like any other.
+
+**Fix.** Detect the product type a query names and limit keyword matches to it. The vocabulary is built from the catalog at startup ([product-types.ts](services/api/src/search/product-types.ts)):
+- Type names and their head words: "watch" → Watches, "flip flops" → Flip Flops. Multi-word names win ("formal shoes" → Formal Shoes only).
+- Category words: "shoes" → every shoe type including heels and flats, "bag" → every bag type. Each type is assigned to the category most of its products belong to, because the catalog's own categories are noisy.
+- Words that double as adjectives or other senses are excluded: "long *sleeve*" isn't Tablet Sleeve, "*lace* top" isn't Shoe Laces, "*short* dress" isn't Shorts. Body-part categories ("out of my *eyes*") are excluded too.
+
+Vector search is left alone, so a wrong detection can't remove the right products from hybrid results.
+
+**Evaluation.** None of the existing query sets contained this kind of query, so a third set was **generated, not hand-written**: 40 random colour + usage + type combinations from the catalog (seed 42, e.g. "black sports watches", "navy blue ethnic kurtas"). It was committed before evaluation ([queries_attribute.json](eval/queries_attribute.json)).
+
+| Query set | BM25 off → on | Hybrid off → on | Hybrid per query (better / same / worse) |
+| --- | --- | --- | --- |
+| **Colour + usage + type (40, generated)** | 0.620 → **0.768** | 0.755 → **0.832** (+10%) | 16 / 22 / 2 |
+| Dev (50) | 0.539 → 0.543 | 0.826 → 0.828 | 1 / 49 / 0 |
+| Held-out (30) | 0.434 → 0.439 | 0.689 → 0.691 | 1 / 29 / 0 |
+
+It fixes the class of query it targets and harms nothing elsewhere; the two small losses are re-orderings within the right product type. It's **on by default** (`typeAware=false` disables it). Caveats:
+- The generated queries use the catalog's own type names, which makes detection easy; real shoppers write messier queries.
+- A first version mapped "shoes" only to Casual/Formal/Sports Shoes, which dropped heels from "shoes for a party". The dev set caught that, and it led to the category rule above.
+- The held-out set has now been used for two decisions (fusion and this one), so it is no longer fully fresh.
+
+Full reports: [eval/results/type_detection](eval/results/type_detection).
+
 ## Design decisions and trade-offs
 
 - **Solr for both BM25 and vectors.** One engine, one set of filters, no consistency problems between two stores. The cost: Solr's kNN is HNSW-only and a little less ergonomic than a dedicated vector DB.
@@ -150,6 +180,8 @@ Note on reproducibility: the very first run of a new query set can differ slight
 
 - [x] Offline evaluation: 50 labelled queries, nDCG@10 / Precision@10 / MRR per mode
 - [x] Fusion experiment: weighted RRF and semantic verification, checked on a held-out set (no gain on unseen queries; RRF kept)
+- [x] Query understanding: detect the product type in a query and limit keyword matches to it (+10% nDCG@10 on colour + usage + type queries)
+- [ ] Detect colour and gender too ("for men", "navy"), and add shopper synonyms ("trainers", "denims") to the type vocabulary
 - [ ] Per-query trust signal between BM25 and CLIP (e.g. score margins or a re-ranker), evaluated on a fresh held-out set
 - [ ] Cross-encoder or CLIP re-ranking stage on the fused top-50
 - [ ] Dockerfiles for API, embedder and web, and a hosted demo

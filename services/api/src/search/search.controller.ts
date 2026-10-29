@@ -12,14 +12,21 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { SolrService } from '../infra/solr.service';
 import { MetricsService } from './metrics.service';
-import { DEFAULT_FUSION, SearchService } from './search.service';
+import { DEFAULT_FUSION, DEFAULT_TYPE_AWARE, SearchService } from './search.service';
 import type { Filters, Fusion, FusionOptions, Mode } from './types';
 
 const MODES: Mode[] = ['lexical', 'vector', 'hybrid'];
 const FUSIONS: Fusion[] = ['rrf', 'weighted', 'verified'];
 const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
 
-type SearchQuery = Filters & { q?: string; mode?: string; limit?: string; fusion?: string; lexicalWeight?: string };
+type SearchQuery = Filters & {
+  q?: string;
+  mode?: string;
+  limit?: string;
+  fusion?: string;
+  lexicalWeight?: string;
+  typeAware?: string;
+};
 
 @Controller()
 export class SearchController {
@@ -35,7 +42,14 @@ export class SearchController {
     if (!q) throw new BadRequestException('q is required');
     const mode = (query.mode ?? 'hybrid') as Mode;
     if (!MODES.includes(mode)) throw new BadRequestException(`mode must be one of ${MODES.join(', ')}`);
-    return this.search.search(q, mode, pickFilters(query), parseLimit(query.limit), parseFusion(query));
+    return this.search.search(
+      q,
+      mode,
+      pickFilters(query),
+      parseLimit(query.limit),
+      parseFusion(query),
+      parseBoolean(query.typeAware, DEFAULT_TYPE_AWARE),
+    );
   }
 
   @Post('search/image')
@@ -60,6 +74,12 @@ export class SearchController {
   stats() {
     return this.metrics.snapshot();
   }
+}
+
+function parseBoolean(raw: string | undefined, fallback: boolean): boolean {
+  if (raw === undefined) return fallback;
+  if (raw === 'true' || raw === 'false') return raw === 'true';
+  throw new BadRequestException('expected true or false');
 }
 
 function parseFusion({ fusion, lexicalWeight }: SearchQuery): FusionOptions {

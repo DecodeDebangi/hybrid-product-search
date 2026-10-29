@@ -1,23 +1,23 @@
 # Findwise relevance evaluation
 
-Run 2026-10-29T10:29:57+00:00 on commit `c4514e7`. 50 queries, metrics at k=10 (MRR within the top 50).
+Run 2026-10-29T10:58:13+00:00 on commit `2fcafd0`. 50 queries from `queries.json`, hybrid fusion `{'fusion': 'rrf'}`, extra parameters `none`, metrics at k=10 (MRR within the top 50).
 
 ## nDCG@10 by query type
 
 | Query type | n | Lexical | Vector | Hybrid |
 | --- | --- | --- | --- | --- |
-| Keyword | 17 | 0.918 | 0.740 | **0.940** |
+| Keyword | 17 | 0.930 | 0.740 | **0.943** |
 | Synonym | 16 | 0.539 | **0.897** | 0.837 |
 | Descriptive | 17 | 0.158 | 0.689 | **0.704** |
-| **All** | 50 | 0.539 | 0.773 | **0.826** |
+| **All** | 50 | 0.543 | 0.773 | **0.828** |
 
 ## All metrics, all queries
 
 | Mode | nDCG@10 | Precision@10 | MRR |
 | --- | --- | --- | --- |
-| Lexical | 0.539 | 0.544 | 0.608 |
+| Lexical | 0.543 | 0.546 | 0.618 |
 | Vector | 0.773 | 0.828 | 0.853 |
-| Hybrid | 0.826 | 0.844 | 0.885 |
+| Hybrid | 0.828 | 0.846 | 0.885 |
 
 ## Head to head (nDCG@10, ties within ±0.01)
 
@@ -43,7 +43,7 @@ Run 2026-10-29T10:29:57+00:00 on commit `c4514e7`. 50 queries, metrics at k=10 (
 | kw11 | grey track pants | 304 | 1.00 | 0.55 | 1.00 |
 | kw12 | green kurta | 2,078 | 1.00 | 0.88 | 1.00 |
 | kw13 | boys tshirts | 531 | 0.17 | 0.27 | 0.29 |
-| kw14 | red saree | 427 | 0.62 | 0.88 | 0.94 |
+| kw14 | red saree | 427 | 0.83 | 0.88 | 1.00 |
 | kw15 | backpack | 735 | 1.00 | 1.00 | 1.00 |
 | kw16 | sports shoes for women | 430 | 1.00 | 0.60 | 1.00 |
 | kw17 | yellow top | 1,762 | 1.00 | 0.78 | 1.00 |

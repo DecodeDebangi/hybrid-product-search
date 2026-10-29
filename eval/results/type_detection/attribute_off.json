@@ -1,0 +1,904 @@
+{
+  "meta": {
+    "timestamp": "2026-10-29T10:57:29+00:00",
+    "commit": "2fcafd0",
+    "queries": 40,
+    "query_set": "queries_attribute.json",
+    "fusion": {
+      "fusion": "rrf"
+    },
+    "params": {
+      "typeAware": "false"
+    }
+  },
+  "summary": {
+    "means": {
+      "attribute": {
+        "lexical": {
+          "ndcg": 0.6204093098631369,
+          "precision": 0.7975,
+          "mrr": 0.839375
+        },
+        "vector": {
+          "ndcg": 0.5125918940989503,
+          "precision": 0.77,
+          "mrr": 0.8823369565217392
+        },
+        "hybrid": {
+          "ndcg": 0.755049861714029,
+          "precision": 0.8925,
+          "mrr": 0.9394230769230769
+        }
+      },
+      "all": {
+        "lexical": {
+          "ndcg": 0.6204093098631369,
+          "precision": 0.7975,
+          "mrr": 0.839375
+        },
+        "vector": {
+          "ndcg": 0.5125918940989503,
+          "precision": 0.77,
+          "mrr": 0.8823369565217392
+        },
+        "hybrid": {
+          "ndcg": 0.755049861714029,
+          "precision": 0.8925,
+          "mrr": 0.9394230769230769
+        }
+      }
+    },
+    "hybrid_vs_lexical": {
+      "wins": 28,
+      "ties": 3,
+      "losses": 9
+    },
+    "hybrid_vs_vector": {
+      "wins": 33,
+      "ties": 1,
+      "losses": 6
+    }
+  },
+  "queries": [
+    {
+      "id": "at01",
+      "category": "attribute",
+      "query": "cream casual dresses",
+      "relevant_in_catalog": 464,
+      "lexical": {
+        "ndcg": 0.8421283856352147,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.20526279280450874,
+        "precision": 0.3,
+        "mrr": 0.3333333333333333
+      },
+      "hybrid": {
+        "ndcg": 0.7935840677649109,
+        "precision": 0.7,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at02",
+      "category": "attribute",
+      "query": "brown casual belts",
+      "relevant_in_catalog": 813,
+      "lexical": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.7601933920987806,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at03",
+      "category": "attribute",
+      "query": "brown casual lipstick",
+      "relevant_in_catalog": 260,
+      "lexical": {
+        "ndcg": 0.6183022532303244,
+        "precision": 0.6,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.8551595247651801,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.8532721558012799,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at04",
+      "category": "attribute",
+      "query": "navy blue ethnic kurtas",
+      "relevant_in_catalog": 1844,
+      "lexical": {
+        "ndcg": 0.6241410282065163,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.5791906403853945,
+        "precision": 0.9,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.9510907186004267,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at05",
+      "category": "attribute",
+      "query": "grey casual jeans",
+      "relevant_in_catalog": 602,
+      "lexical": {
+        "ndcg": 0.3589542101716347,
+        "precision": 0.2,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.5565885079949245,
+        "precision": 0.7,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at06",
+      "category": "attribute",
+      "query": "gold casual flats",
+      "relevant_in_catalog": 500,
+      "lexical": {
+        "ndcg": 0.06943122193677727,
+        "precision": 0.1,
+        "mrr": 0.125
+      },
+      "vector": {
+        "ndcg": 0.5449795138799276,
+        "precision": 0.6,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.0,
+        "precision": 0.0,
+        "mrr": 0.07692307692307693
+      }
+    },
+    {
+      "id": "at07",
+      "category": "attribute",
+      "query": "grey casual deodorant",
+      "relevant_in_catalog": 347,
+      "lexical": {
+        "ndcg": 0.23839526626207855,
+        "precision": 0.6,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.5595345229181633,
+        "precision": 0.9,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.43893943504566835,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at08",
+      "category": "attribute",
+      "query": "red casual tunics",
+      "relevant_in_catalog": 229,
+      "lexical": {
+        "ndcg": 0.9134166588977729,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.0,
+        "precision": 0.0,
+        "mrr": 0.043478260869565216
+      },
+      "hybrid": {
+        "ndcg": 0.4887396453508726,
+        "precision": 0.7,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at09",
+      "category": "attribute",
+      "query": "grey casual clutches",
+      "relevant_in_catalog": 288,
+      "lexical": {
+        "ndcg": 0.7788708846071952,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.5127767013355632,
+        "precision": 0.6,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.8623893785099407,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at10",
+      "category": "attribute",
+      "query": "grey casual sunglasses",
+      "relevant_in_catalog": 1073,
+      "lexical": {
+        "ndcg": 0.709192305126817,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.33333333333333337,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.425908295915703,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at11",
+      "category": "attribute",
+      "query": "purple casual belts",
+      "relevant_in_catalog": 813,
+      "lexical": {
+        "ndcg": 0.9216017310213247,
+        "precision": 0.9,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.9052116356304492,
+        "precision": 0.9,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at12",
+      "category": "attribute",
+      "query": "olive casual belts",
+      "relevant_in_catalog": 813,
+      "lexical": {
+        "ndcg": 0.9537125187088151,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.5752579402228116,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at13",
+      "category": "attribute",
+      "query": "skin casual compact",
+      "relevant_in_catalog": 39,
+      "lexical": {
+        "ndcg": 0.4362115423097744,
+        "precision": 0.6,
+        "mrr": 0.2
+      },
+      "vector": {
+        "ndcg": 0.6281460426238844,
+        "precision": 0.7,
+        "mrr": 0.5
+      },
+      "hybrid": {
+        "ndcg": 0.7819835854675755,
+        "precision": 0.7,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at14",
+      "category": "attribute",
+      "query": "navy blue casual jackets",
+      "relevant_in_catalog": 258,
+      "lexical": {
+        "ndcg": 0.7576494534023693,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.47871649910513914,
+        "precision": 0.7,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.8878984756873927,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at15",
+      "category": "attribute",
+      "query": "beige ethnic kurtas",
+      "relevant_in_catalog": 1844,
+      "lexical": {
+        "ndcg": 0.33333333333333337,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.6563566252131567,
+        "precision": 0.8,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.92663607790064,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at16",
+      "category": "attribute",
+      "query": "navy blue casual trunk",
+      "relevant_in_catalog": 140,
+      "lexical": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.5608139379317446,
+        "precision": 0.7,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.9134166588977729,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at17",
+      "category": "attribute",
+      "query": "green casual belts",
+      "relevant_in_catalog": 813,
+      "lexical": {
+        "ndcg": 0.5795646510170772,
+        "precision": 0.7,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.6543566603620868,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.8566545804700255,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at18",
+      "category": "attribute",
+      "query": "black sports watches",
+      "relevant_in_catalog": 2542,
+      "lexical": {
+        "ndcg": 0.2257645863770022,
+        "precision": 0.4,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.35366245098117144,
+        "precision": 0.9,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.687107563975354,
+        "precision": 0.9,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at19",
+      "category": "attribute",
+      "query": "purple casual heels",
+      "relevant_in_catalog": 1323,
+      "lexical": {
+        "ndcg": 0.3049522941194597,
+        "precision": 0.8,
+        "mrr": 0.5
+      },
+      "vector": {
+        "ndcg": 0.3753208988896912,
+        "precision": 0.7,
+        "mrr": 0.5
+      },
+      "hybrid": {
+        "ndcg": 0.3282263186644418,
+        "precision": 0.7,
+        "mrr": 0.5
+      }
+    },
+    {
+      "id": "at20",
+      "category": "attribute",
+      "query": "copper casual sunglasses",
+      "relevant_in_catalog": 1073,
+      "lexical": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.4066972554326934,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.8546557236450504,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at21",
+      "category": "attribute",
+      "query": "white casual jackets",
+      "relevant_in_catalog": 258,
+      "lexical": {
+        "ndcg": 0.47605580957989446,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.4335481230898008,
+        "precision": 0.5,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.6615212559918617,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at22",
+      "category": "attribute",
+      "query": "black formal ties",
+      "relevant_in_catalog": 263,
+      "lexical": {
+        "ndcg": 0.9086768598011254,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.45560653683226676,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.6756856998333554,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at23",
+      "category": "attribute",
+      "query": "purple casual lipstick",
+      "relevant_in_catalog": 260,
+      "lexical": {
+        "ndcg": 0.37576775259321094,
+        "precision": 0.4,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.4318863272769684,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.9477344873475498,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at24",
+      "category": "attribute",
+      "query": "blue casual backpacks",
+      "relevant_in_catalog": 724,
+      "lexical": {
+        "ndcg": 0.6733794209721947,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.7799082337019199,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.8340611153182702,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at25",
+      "category": "attribute",
+      "query": "black casual formal shoes",
+      "relevant_in_catalog": 637,
+      "lexical": {
+        "ndcg": 0.25996941123397327,
+        "precision": 0.9,
+        "mrr": 0.5
+      },
+      "vector": {
+        "ndcg": 0.10339044788217928,
+        "precision": 0.4,
+        "mrr": 0.25
+      },
+      "hybrid": {
+        "ndcg": 0.33333333333333337,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at26",
+      "category": "attribute",
+      "query": "brown ethnic sarees",
+      "relevant_in_catalog": 427,
+      "lexical": {
+        "ndcg": 0.21405945547991714,
+        "precision": 0.6,
+        "mrr": 0.25
+      },
+      "vector": {
+        "ndcg": 0.524461289859338,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.7331295545875969,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at27",
+      "category": "attribute",
+      "query": "purple casual flip flops",
+      "relevant_in_catalog": 914,
+      "lexical": {
+        "ndcg": 0.7374943749026187,
+        "precision": 0.9,
+        "mrr": 0.5
+      },
+      "vector": {
+        "ndcg": 0.8296372173325494,
+        "precision": 0.9,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.92663607790064,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at28",
+      "category": "attribute",
+      "query": "blue casual jackets",
+      "relevant_in_catalog": 258,
+      "lexical": {
+        "ndcg": 0.669937311674563,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.3419168449893812,
+        "precision": 0.3,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.9134166588977729,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at29",
+      "category": "attribute",
+      "query": "white casual sandals",
+      "relevant_in_catalog": 895,
+      "lexical": {
+        "ndcg": 0.17385949423735755,
+        "precision": 0.6,
+        "mrr": 0.5
+      },
+      "vector": {
+        "ndcg": 0.33013764944712026,
+        "precision": 0.2,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.2489083270225946,
+        "precision": 0.2,
+        "mrr": 0.5
+      }
+    },
+    {
+      "id": "at30",
+      "category": "attribute",
+      "query": "silver casual clutches",
+      "relevant_in_catalog": 288,
+      "lexical": {
+        "ndcg": 0.9363792118010482,
+        "precision": 0.9,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.37588480579153805,
+        "precision": 0.7,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.8842222191013388,
+        "precision": 0.9,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at31",
+      "category": "attribute",
+      "query": "beige casual shorts",
+      "relevant_in_catalog": 547,
+      "lexical": {
+        "ndcg": 0.914856882358379,
+        "precision": 0.9,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.8145345535880326,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.9052116356304492,
+        "precision": 0.9,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at32",
+      "category": "attribute",
+      "query": "black casual deodorant",
+      "relevant_in_catalog": 347,
+      "lexical": {
+        "ndcg": 0.280316465677356,
+        "precision": 0.6,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.5499869986501705,
+        "precision": 0.8,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.5182223108355947,
+        "precision": 0.9,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at33",
+      "category": "attribute",
+      "query": "brown formal shirts",
+      "relevant_in_catalog": 3212,
+      "lexical": {
+        "ndcg": 0.0,
+        "precision": 0.0,
+        "mrr": 0.0
+      },
+      "vector": {
+        "ndcg": 0.48006117753205346,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.24094199170153954,
+        "precision": 0.5,
+        "mrr": 0.5
+      }
+    },
+    {
+      "id": "at34",
+      "category": "attribute",
+      "query": "mustard ethnic sarees",
+      "relevant_in_catalog": 427,
+      "lexical": {
+        "ndcg": 0.7799082337019199,
+        "precision": 0.9,
+        "mrr": 0.5
+      },
+      "vector": {
+        "ndcg": 0.6550910915065752,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at35",
+      "category": "attribute",
+      "query": "black casual laptop bag",
+      "relevant_in_catalog": 82,
+      "lexical": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.7421246259355073,
+        "precision": 0.7,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at36",
+      "category": "attribute",
+      "query": "nude casual bra",
+      "relevant_in_catalog": 477,
+      "lexical": {
+        "ndcg": 0.92663607790064,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.5368232559598008,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.9477344873475498,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at37",
+      "category": "attribute",
+      "query": "beige casual tops",
+      "relevant_in_catalog": 1762,
+      "lexical": {
+        "ndcg": 0.9363792118010482,
+        "precision": 0.9,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.2805549724583402,
+        "precision": 0.6,
+        "mrr": 0.3333333333333333
+      },
+      "hybrid": {
+        "ndcg": 0.8943938982876649,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at38",
+      "category": "attribute",
+      "query": "teal casual tshirts",
+      "relevant_in_catalog": 7065,
+      "lexical": {
+        "ndcg": 0.3708496324123732,
+        "precision": 0.7,
+        "mrr": 0.5
+      },
+      "vector": {
+        "ndcg": 0.1875491736165633,
+        "precision": 0.7,
+        "mrr": 0.3333333333333333
+      },
+      "hybrid": {
+        "ndcg": 0.6330665779257147,
+        "precision": 0.6,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at39",
+      "category": "attribute",
+      "query": "green ethnic dupatta",
+      "relevant_in_catalog": 116,
+      "lexical": {
+        "ndcg": 0.7416702490101529,
+        "precision": 0.7,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.5138088387206203,
+        "precision": 0.7,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "at40",
+      "category": "attribute",
+      "query": "white formal shirts",
+      "relevant_in_catalog": 3212,
+      "lexical": {
+        "ndcg": 0.7745542150242183,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.635204723878684,
+        "precision": 0.9,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.8532721558012799,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    }
+  ]
+}

@@ -15,7 +15,7 @@ import httpx
 from .paths import REPO_ROOT
 
 MODES = ["lexical", "vector", "hybrid"]
-CATEGORIES = ["keyword", "synonym", "descriptive"]
+CATEGORIES = ["keyword", "synonym", "descriptive", "attribute"]
 K = 10
 DEPTH = 50  # results fetched per query; MRR looks this deep
 SPOT_CHECK_DEPTH = 5
@@ -65,8 +65,8 @@ class Solr:
         return {doc["id"]: doc for doc in res.json()["response"]["docs"]}
 
 
-def search(api: httpx.Client, query: str, mode: str, fusion: dict[str, str]) -> list[str]:
-    params = {"q": query, "mode": mode, "limit": DEPTH, **(fusion if mode == "hybrid" else {})}
+def search(api: httpx.Client, query: str, mode: str, fusion: dict[str, str], extra: dict[str, str]) -> list[str]:
+    params = {"q": query, "mode": mode, "limit": DEPTH, **extra, **(fusion if mode == "hybrid" else {})}
     res = api.get("/api/search", params=params)
     res.raise_for_status()
     return [hit["id"] for hit in res.json()["hits"]]
@@ -81,7 +81,7 @@ def git_sha() -> str:
 
 
 def evaluate(
-    queries: list[dict], api: httpx.Client, solr: Solr, fusion: dict[str, str]
+    queries: list[dict], api: httpx.Client, solr: Solr, fusion: dict[str, str], extra: dict[str, str]
 ) -> tuple[list[dict], list[dict]]:
     rows, spot_checks = [], []
     for q in queries:
@@ -92,7 +92,7 @@ def evaluate(
 
         row = {"id": q["id"], "category": q["category"], "query": q["query"], "relevant_in_catalog": n_relevant}
         for mode in MODES:
-            ids = search(api, q["query"], mode, fusion)
+            ids = search(api, q["query"], mode, fusion, extra)
             docs = solr.attributes(ids)
             grades = [grade(docs.get(i, {}), q) for i in ids]
             row[mode] = score(grades, n_relevant, n_perfect)
@@ -146,6 +146,7 @@ def render_markdown(summary: dict, rows: list[dict], meta: dict) -> str:
         "",
         f"Run {meta['timestamp']} on commit `{meta['commit']}`. "
         f"{meta['queries']} queries from `{meta['query_set']}`, hybrid fusion `{meta['fusion']}`, "
+        f"extra parameters `{meta['params'] or 'none'}`, "
         f"metrics at k={K} (MRR within the top {DEPTH}).",
         "",
         "## nDCG@10 by query type",
@@ -210,12 +211,16 @@ def main():
     parser.add_argument("--out-dir", type=Path, default=REPO_ROOT / "eval" / "results")
     parser.add_argument("--fusion", choices=["rrf", "weighted", "verified"], help="hybrid fusion strategy")
     parser.add_argument("--lexical-weight", help="BM25 weight for --fusion weighted")
+    parser.add_argument(
+        "--param", action="append", default=[], metavar="KEY=VALUE", help="extra search parameter for every mode"
+    )
     args = parser.parse_args()
 
     queries = json.loads(args.queries.read_text())["queries"]
     api = httpx.Client(base_url=args.api_url, timeout=60)
     fusion = {k: v for k, v in {"fusion": args.fusion, "lexicalWeight": args.lexical_weight}.items() if v}
-    rows, spot_checks = evaluate(queries, api, Solr(args.solr_url), fusion)
+    extra = dict(p.split("=", 1) for p in args.param)
+    rows, spot_checks = evaluate(queries, api, Solr(args.solr_url), fusion, extra)
     summary = summarize(rows)
     meta = {
         "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -223,6 +228,7 @@ def main():
         "queries": len(rows),
         "query_set": args.queries.name,
         "fusion": fusion or {"fusion": "rrf"},
+        "params": extra,
     }
 
     args.out_dir.mkdir(parents=True, exist_ok=True)

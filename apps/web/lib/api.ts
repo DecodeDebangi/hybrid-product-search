@@ -19,6 +19,7 @@ export interface SearchResponse {
   hits: Hit[];
   timings: { embedMs?: number; lexicalMs?: number; vectorMs?: number; totalMs: number };
   embeddingCached?: boolean;
+  understanding?: { productTypes: string[] };
 }
 
 export type Facets = Record<FilterKey, { value: string; count: number }[]>;

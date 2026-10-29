@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { EmbedderService } from '../infra/embedder.service';
 import { round, SolrResult, SolrService } from '../infra/solr.service';
 import { MetricsService } from './metrics.service';
+import { ProductTypeService } from './product-types.service';
 import { RankedList, reciprocalRankFusion } from './rrf';
 import type { Filters, FusionOptions, Mode, Product, SearchResponse, Source, Timings } from './types';
 import { verifyLexical } from './verify';
@@ -11,6 +12,7 @@ const HYBRID_CANDIDATES = 100;
 const RRF_K = 60;
 
 export const DEFAULT_FUSION: FusionOptions = { strategy: 'rrf', lexicalWeight: 1 };
+export const DEFAULT_TYPE_AWARE = true;
 
 @Injectable()
 export class SearchService {
@@ -18,6 +20,7 @@ export class SearchService {
     private readonly solr: SolrService,
     private readonly embedder: EmbedderService,
     private readonly metrics: MetricsService,
+    private readonly productTypes: ProductTypeService,
   ) {}
 
   async search(
@@ -26,19 +29,27 @@ export class SearchService {
     filters: Filters,
     limit: number,
     fusion: FusionOptions = DEFAULT_FUSION,
+    typeAware = DEFAULT_TYPE_AWARE,
   ): Promise<SearchResponse> {
     const start = performance.now();
     const pool = mode === 'hybrid' ? Math.max(HYBRID_CANDIDATES, limit) : limit;
     const verify = mode === 'hybrid' && fusion.strategy === 'verified';
     const timings: Partial<Timings> = {};
 
+    // A type the shopper picked as a filter already constrains both retrievers.
+    const productTypes =
+      typeAware && mode !== 'vector' && !filters.articleType ? await this.productTypes.detect(q) : [];
+    const understanding = productTypes.length ? { productTypes } : undefined;
+
     const embedding = mode !== 'lexical' ? this.embedder.embedText(q) : undefined;
     const [lexical, vector, embedded] = await Promise.all([
       mode === 'vector'
         ? undefined
         : verify
-          ? embedding!.then((e) => this.solr.lexical(q, filters, pool, e.vector))
-          : this.solr.lexical(q, filters, pool),
+          ? embedding!.then((e) =>
+              this.solr.lexical(q, filters, pool, { queryVector: e.vector, articleTypes: productTypes }),
+            )
+          : this.solr.lexical(q, filters, pool, { articleTypes: productTypes }),
       embedding?.then((e) => this.solr.knn(e.vector, filters, pool)),
       embedding,
     ]);
@@ -47,7 +58,8 @@ export class SearchService {
     timings.vectorMs = vector?.ms;
 
     if (mode !== 'hybrid') {
-      return this.respond(mode, start, timings, limit, { lexical, vector }, {}, embedded?.cached);
+      const response = this.respond(mode, start, timings, limit, { lexical, vector }, {}, embedded?.cached);
+      return { ...response, understanding };
     }
 
     let fusedLexical = lexical;
@@ -61,7 +73,7 @@ export class SearchService {
     }
     const weights = fusion.strategy === 'weighted' ? { lexical: fusion.lexicalWeight } : {};
     const response = this.respond(mode, start, timings, limit, { lexical: fusedLexical, vector }, weights, embedded?.cached);
-    return { ...response, fusion: { strategy: fusion.strategy, droppedLexical, keptLexical } };
+    return { ...response, understanding, fusion: { strategy: fusion.strategy, droppedLexical, keptLexical } };
   }
 
   async searchByImage(file: Express.Multer.File, filters: Filters, limit: number): Promise<SearchResponse> {

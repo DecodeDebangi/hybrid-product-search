@@ -48,4 +48,6 @@ export interface SearchResponse {
   embeddingCached?: boolean;
   /** Hybrid only: how results were fused, and how many BM25 matches verification kept or dropped. */
   fusion?: { strategy: Fusion; droppedLexical?: number; keptLexical?: number };
+  /** Product types detected in the query; keyword matches were limited to them. */
+  understanding?: { productTypes: string[] };
 }

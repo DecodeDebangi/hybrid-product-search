@@ -15,6 +15,11 @@ export function TimingBar({ response }: { response: SearchResponse }) {
       {lexicalMs !== undefined && <span>BM25 {lexicalMs.toFixed(0)} ms</span>}
       {vectorMs !== undefined && <span>kNN {vectorMs.toFixed(0)} ms</span>}
       <span>{response.hits.length} results</span>
+      {response.understanding && (
+        <span className="detected" title="Keyword matches are limited to the product type named in the query">
+          Detected: {response.understanding.productTypes.join(', ')}
+        </span>
+      )}
     </div>
   );
 }

@@ -115,6 +115,7 @@ button { font: inherit; cursor: pointer; }
 
 .timings { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 6px 0 14px; font-size: 13px; color: var(--muted); }
 .timings strong { color: var(--text); }
+.detected { color: var(--vector); background: var(--vector-bg); border-radius: 6px; padding: 0 6px; }
 
 .grid {
   list-style: none;

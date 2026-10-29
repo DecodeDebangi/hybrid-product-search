@@ -22,11 +22,21 @@ type SolrDoc = Record<string, any>;
 
 @Injectable()
 export class SolrService {
-  /** With `queryVector`, each match also carries its image similarity to the query. */
-  lexical(q: string, filters: Filters, limit: number, queryVector?: number[]): Promise<SolrResult> {
+  /**
+   * With `queryVector`, each match also carries its image similarity to the query.
+   * With `articleTypes`, matches are limited to those product types.
+   */
+  lexical(
+    q: string,
+    filters: Filters,
+    limit: number,
+    { queryVector, articleTypes }: { queryVector?: number[]; articleTypes?: string[] } = {},
+  ): Promise<SolrResult> {
+    const filter = toFilterQueries(filters);
+    if (articleTypes?.length) filter.push(`{!terms f=article_type}${articleTypes.join(',')}`);
     return this.select({
       query: q,
-      filter: toFilterQueries(filters),
+      filter,
       limit,
       fields: queryVector ? `${FIELDS},${similarityField(queryVector)}` : FIELDS,
       params: { defType: 'edismax', qf: 'name^3 search_text', pf: 'name^5', mm: '2<75%' },
@@ -50,6 +60,23 @@ export class SolrService {
     const doc = (await this.request(`/get?id=${encodeURIComponent(id)}&fl=id,image_vector`)).doc;
     if (!doc) throw new NotFoundException(`Product ${id} not found`);
     return doc.image_vector;
+  }
+
+  /** Every article type with the sub-category most of its products belong to. */
+  async articleTypes(): Promise<{ type: string; category: string }[]> {
+    const res = await this.request('/select', {
+      query: '*:*',
+      limit: 0,
+      facet: {
+        types: {
+          type: 'terms',
+          field: 'article_type',
+          limit: -1,
+          facet: { category: { type: 'terms', field: 'sub_category', limit: 1 } },
+        },
+      },
+    });
+    return res.facets.types.buckets.map((b: SolrDoc) => ({ type: b.val, category: b.category.buckets[0]?.val }));
   }
 
   async facets(): Promise<Record<keyof Filters, { value: string; count: number }[]>> {
