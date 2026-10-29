@@ -1,0 +1,12 @@
+{
+  "name": "findwise",
+  "private": true,
+  "scripts": {
+    "infra:up": "docker compose up -d",
+    "infra:down": "docker compose down",
+    "embedder": "cd services/ml && uv run findwise-embedder",
+    "ingest": "cd services/ml && uv run findwise-ingest",
+    "api": "pnpm --filter @findwise/api dev",
+    "web": "pnpm --filter @findwise/web dev"
+  }
+}
