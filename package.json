@@ -8,6 +8,7 @@
     "ingest": "cd services/ml && uv run findwise-ingest",
     "api": "pnpm --filter @findwise/api dev",
     "web": "pnpm --filter @findwise/web dev",
-    "eval": "cd services/ml && uv run findwise-eval"
+    "eval": "cd services/ml && uv run findwise-eval",
+    "grade": "cd services/ml && uv run findwise-grade"
   }
 }

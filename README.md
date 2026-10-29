@@ -53,6 +53,7 @@ pnpm embedder                  # CLIP service on :8001
 pnpm api                       # API on :4000 (watch mode)
 pnpm web                       # UI on http://localhost:3100
 pnpm eval                      # relevance report → eval/results/latest.md
+pnpm grade                     # blind human grading UI on :8002; `pnpm grade --report` for agreement
 ```
 
 To pass flags to ingest: `cd services/ml && uv run findwise-ingest --limit 2000`.
@@ -87,17 +88,26 @@ To pass flags to ingest: `cd services/ml && uv run findwise-ingest --limit 2000`
 | Query type | Example | Lexical | Vector | Hybrid |
 | --- | --- | --- | --- | --- |
 | Keyword (17) | "navy blue shirt" | 0.918 | 0.740 | **0.940** |
-| Synonym (16) | "trainers", "billfold" | 0.530 | **0.893** | 0.837 |
+| Synonym (16) | "trainers", "billfold" | 0.539 | **0.897** | 0.837 |
 | Descriptive (17) | "something to carry my laptop in" | 0.158 | 0.689 | **0.704** |
-| **All (50)** | | 0.536 | 0.772 | **0.826** |
+| **All (50)** | | 0.539 | 0.773 | **0.826** |
 
-- **Hybrid improves nDCG@10 by 54% over BM25** (0.536 → 0.826) and by 7% over vector-only search. Head to head, hybrid beats or ties BM25 on 46 of 50 queries.
+- **Hybrid improves nDCG@10 by 53% over BM25** (0.539 → 0.826) and by 7% over vector-only search. Head to head, hybrid beats or ties BM25 on 46 of 50 queries.
 - **BM25 returns no results at all for 13 of 17 descriptive queries.** Its matching rule (edismax, `mm=2<75%`) needs most query terms to appear in the product text, and "something warm for winter" never does. CLIP matches the product image instead.
 - **Hybrid keeps BM25's precision on exact queries.** Vector-only search drops to 0.740 on keyword queries; hybrid reaches 0.940.
-- **Weakness: on synonym queries, hybrid loses to vector-only** (0.837 vs 0.893). For queries like "shades" and "denims", BM25 contributes off-topic matches and equal-weight RRF ranks them in. Fixing this (weighted or query-aware fusion) is next on the roadmap.
+- **Weakness: on synonym queries, hybrid loses to vector-only** (0.837 vs 0.897). For queries like "shades" and "denims", BM25 contributes off-topic matches and equal-weight RRF ranks them in. Fixing this (weighted or query-aware fusion) is next on the roadmap.
 - **Failure case:** "light summer dress" in vector mode returns kurtas. In Indian catalog usage "dress" often means outfit, and CLIP follows that reading; hybrid recovers about half the loss.
 
 **Method.** A product is relevant when its catalog attributes satisfy the query's rule, for example `article_type ∈ {Laptop Bag, Backpacks, Messenger Bag, Rucksacks}` ([queries.json](eval/queries.json)). Because relevance comes from attributes, the full relevant set for every query is counted in Solr, so the ideal ranking for nDCG is exact rather than estimated from a pool. Every top-5 result is exported to [spot_check.csv](eval/results/spot_check.csv) for manual review. A manual review fixed two rules that were too narrow, and both fixes are logged in `queries.json`. Back-to-back runs give identical scores.
+
+**Human validation.** A person graded a balanced sample of 50 (query, product) pairs blind, without seeing the automatic grade or the search mode (`pnpm grade`). The person then re-checked 4 grades that disagreed with the automatic grade and looked like mis-clicks, and changed all 4. Re-checking only disagreements can only raise agreement, so both figures are reported.
+
+| | Relevant vs not: agreement | Cohen's κ | Exact 0/1/2 agreement |
+| --- | --- | --- | --- |
+| First pass | 82% | 0.15 | 68% |
+| After re-check | **86%** | **0.46** | 74% |
+
+In 9 of the 13 remaining disagreements, the automatic grader is **stricter** than the person: label noise such as a pink heel tagged "Casual Shoes", or reasonable alternatives that a rule excludes. That suggests the scores above are, if anything, slightly low. One rule (sy15, "pumps") was widened as a result. The agreement figures were measured **before** that change, so they aren't tuned to this sample. Details: [human_agreement.md](eval/results/human_agreement.md); first pass: [human_agreement_initial.md](eval/results/human_agreement_initial.md).
 
 **Limits.** Labels describe category, colour, gender and usage, but not pattern, fabric or style, so queries like "floral print" can't be graded this way. The labels also carry noise: many boys' t-shirts are tagged `Men`, which lowers kw13 in every mode. That's left uncorrected on purpose. BM25 also indexes these same attributes, which if anything favours the lexical baseline.
 

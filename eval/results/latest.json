@@ -1,7 +1,7 @@
 {
   "meta": {
-    "timestamp": "2026-10-29T09:53:20+00:00",
-    "commit": "0fd4144",
+    "timestamp": "2026-10-29T10:29:57+00:00",
+    "commit": "c4514e7",
     "queries": 50
   },
   "summary": {
@@ -25,13 +25,13 @@
       },
       "synonym": {
         "lexical": {
-          "ndcg": 0.5300034102273687,
-          "precision": 0.53125,
-          "mrr": 0.62890625
+          "ndcg": 0.5394193003969191,
+          "precision": 0.54375,
+          "mrr": 0.66015625
         },
         "vector": {
-          "ndcg": 0.8932125451131313,
-          "precision": 0.9,
+          "ndcg": 0.8965127357916417,
+          "precision": 0.9125,
           "mrr": 0.8958333333333334
         },
         "hybrid": {
@@ -59,13 +59,13 @@
       },
       "all": {
         "lexical": {
-          "ndcg": 0.5355128550565754,
-          "precision": 0.54,
-          "mrr": 0.5979166666666667
+          "ndcg": 0.5385259399108316,
+          "precision": 0.544,
+          "mrr": 0.6079166666666667
         },
         "vector": {
-          "ndcg": 0.7716556568315039,
-          "precision": 0.824,
+          "ndcg": 0.7727117178486272,
+          "precision": 0.828,
           "mrr": 0.8531904761904762
         },
         "hybrid": {
@@ -742,15 +742,15 @@
       "id": "sy15",
       "category": "synonym",
       "query": "pumps for women",
-      "relevant_in_catalog": 1822,
+      "relevant_in_catalog": 2155,
       "lexical": {
-        "ndcg": 0.6458558346607255,
-        "precision": 0.8,
-        "mrr": 0.5
+        "ndcg": 0.7965100773735325,
+        "precision": 1.0,
+        "mrr": 1.0
       },
       "vector": {
-        "ndcg": 0.8415908474314975,
-        "precision": 0.8,
+        "ndcg": 0.8943938982876649,
+        "precision": 1.0,
         "mrr": 1.0
       },
       "hybrid": {

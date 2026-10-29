@@ -3,6 +3,7 @@
   "revisions": [
     "2026-10-29: de12 add `Accessory Gift Set` (tie + cufflink sets were wrongly graded 0 in every mode).",
     "2026-10-29: de01 add `Scarves` (warm accessories omitted from the original rule).",
+    "2026-10-29 (after human grading): sy15 add `Casual Shoes` as partial matches; in British/Indian English \"pumps\" also means plimsolls.",
     "Known label noise, deliberately not corrected: many boys' t-shirts are labelled gender `Men`, which depresses kw13 for every mode."
   ],
   "queries": [
@@ -38,7 +39,7 @@
     { "id": "sy12", "category": "synonym", "query": "tee", "must": {"article_type": ["Tshirts", "Lounge Tshirts"]} },
     { "id": "sy13", "category": "synonym", "query": "spectacles", "must": {"article_type": ["Sunglasses"]} },
     { "id": "sy14", "category": "synonym", "query": "rucksack", "must": {"article_type": ["Backpacks", "Rucksacks"]} },
-    { "id": "sy15", "category": "synonym", "query": "pumps for women", "must": {"article_type": ["Heels", "Flats"], "gender": ["Women"]}, "should": {"article_type": ["Heels"]} },
+    { "id": "sy15", "category": "synonym", "query": "pumps for women", "must": {"article_type": ["Heels", "Flats", "Casual Shoes"], "gender": ["Women"]}, "should": {"article_type": ["Heels", "Flats"]} },
     { "id": "sy16", "category": "synonym", "query": "billfold", "must": {"article_type": ["Wallets"]} },
 
     { "id": "de01", "category": "descriptive", "query": "something warm for winter", "must": {"article_type": ["Jackets", "Sweaters", "Sweatshirts", "Mufflers", "Gloves", "Shrug", "Blazers", "Scarves"]} },

@@ -1,0 +1,455 @@
+{
+  "seed": 7,
+  "items": [
+    {
+      "key": "sy02:4070",
+      "query_id": "sy02",
+      "query": "sneakers",
+      "product_id": "4070",
+      "name": "Numero Uno Women Canvas Grey Pink Shoe",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "sy07:24179",
+      "query_id": "sy07",
+      "query": "slippers",
+      "product_id": "24179",
+      "name": "Converse Men Ct As Check Box Slipper Red Slippers",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "de17:19743",
+      "query_id": "de17",
+      "query": "keep my hands warm",
+      "product_id": "19743",
+      "name": "United colors of benetton Women Blue Cap",
+      "auto_grade": 0,
+      "human_grade": 0
+    },
+    {
+      "key": "de11:6343",
+      "query_id": "de11",
+      "query": "shoes for a party",
+      "product_id": "6343",
+      "name": "Catwalk Women Black Peep Toes",
+      "auto_grade": 1,
+      "human_grade": 2
+    },
+    {
+      "key": "kw01:10393",
+      "query_id": "kw01",
+      "query": "black watch",
+      "product_id": "10393",
+      "name": "Puma Women Spark 351 Black Watches",
+      "auto_grade": 2,
+      "human_grade": 1
+    },
+    {
+      "key": "de12:25064",
+      "query_id": "de12",
+      "query": "accessories to complete a formal look",
+      "product_id": "25064",
+      "name": "Lino Perros Men Formal Brown Accessory Gift Set",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "de04:50051",
+      "query_id": "de04",
+      "query": "gym clothes",
+      "product_id": "50051",
+      "name": "Hanes Men Black Innerwear Vest",
+      "auto_grade": 0,
+      "human_grade": 2
+    },
+    {
+      "key": "sy11:10388",
+      "query_id": "sy11",
+      "query": "timepiece for her",
+      "product_id": "10388",
+      "name": "Puma Women Pliancy 199 Pink Watches",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "sy13:23702",
+      "query_id": "sy13",
+      "query": "spectacles",
+      "product_id": "23702",
+      "name": "Rayban Men Orange New Wayfarer Sunglasses",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "kw06:2385",
+      "query_id": "kw06",
+      "query": "men formal shoes",
+      "product_id": "2385",
+      "name": "Red Tape Semi Casual Men's Brown Shoe",
+      "auto_grade": 0,
+      "human_grade": 1
+    },
+    {
+      "key": "de09:24384",
+      "query_id": "de09",
+      "query": "comfortable sleepwear for women",
+      "product_id": "24384",
+      "name": "Folklore Women Black Printed Kurta",
+      "auto_grade": 0,
+      "human_grade": 0
+    },
+    {
+      "key": "de03:9477",
+      "query_id": "de03",
+      "query": "office wear for men",
+      "product_id": "9477",
+      "name": "John Miller Men White & Black Check Shirt",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "de05:4980",
+      "query_id": "de05",
+      "query": "things to pack for a beach holiday",
+      "product_id": "4980",
+      "name": "Palm Tree Girl's Benita Blue Kidswear",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "kw11:28630",
+      "query_id": "kw11",
+      "query": "grey track pants",
+      "product_id": "28630",
+      "name": "Nike Men Pintuck Grey Track Pants",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "de08:55394",
+      "query_id": "de08",
+      "query": "makeup for lips",
+      "product_id": "55394",
+      "name": "Revlon Eye & Lip Makeup Remover",
+      "auto_grade": 0,
+      "human_grade": 1
+    },
+    {
+      "key": "kw04:2650",
+      "query_id": "kw04",
+      "query": "women handbags",
+      "product_id": "2650",
+      "name": "Murcia Women Brown Leather Bag",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "kw09:25729",
+      "query_id": "kw09",
+      "query": "brown belt",
+      "product_id": "25729",
+      "name": "Wrangler Women Brown Belt",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "sy02:3554",
+      "query_id": "sy02",
+      "query": "sneakers",
+      "product_id": "3554",
+      "name": "Skechers Men Black Sneakers",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "de15:53486",
+      "query_id": "de15",
+      "query": "what to wear to the gym if you're a woman",
+      "product_id": "53486",
+      "name": "Amante Black Sports Bra BCST11",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "sy05:9195",
+      "query_id": "sy05",
+      "query": "denims",
+      "product_id": "9195",
+      "name": "Spykar Men Style Essentials Kns 0542 Blue Jeans",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "kw08:52185",
+      "query_id": "kw08",
+      "query": "silver earrings",
+      "product_id": "52185",
+      "name": "Lencia Sterling Silver Earrings",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "de16:44156",
+      "query_id": "de16",
+      "query": "fragrance for men",
+      "product_id": "44156",
+      "name": "Nike Fragrances Men Fragrance Gift Set",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "de13:4097",
+      "query_id": "de13",
+      "query": "running gear",
+      "product_id": "4097",
+      "name": "Nike Men's Team Poly Red T-shirt",
+      "auto_grade": 2,
+      "human_grade": 1
+    },
+    {
+      "key": "sy01:4146",
+      "query_id": "sy01",
+      "query": "trainers",
+      "product_id": "4146",
+      "name": "Nike Women Trainer White Purple Shoe",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "sy15:51753",
+      "query_id": "sy15",
+      "query": "pumps for women",
+      "product_id": "51753",
+      "name": "Catwalk Women Grey Pumps",
+      "auto_grade": 0,
+      "human_grade": 2
+    },
+    {
+      "key": "kw13:10691",
+      "query_id": "kw13",
+      "query": "boys tshirts",
+      "product_id": "10691",
+      "name": "Doodle Boy Little Boy Green Tshirts",
+      "auto_grade": 0,
+      "human_grade": 2
+    },
+    {
+      "key": "kw10:29674",
+      "query_id": "kw10",
+      "query": "navy blue shirt",
+      "product_id": "29674",
+      "name": "Indigo Nation Navy Blue Shirt",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "kw05:16960",
+      "query_id": "kw05",
+      "query": "sunglasses",
+      "product_id": "16960",
+      "name": "Image Men Classic Eyewear Black Sunglasses",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "sy16:27762",
+      "query_id": "sy16",
+      "query": "billfold",
+      "product_id": "27762",
+      "name": "Bulchee Men Dark Brown Wallet",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "kw07:24819",
+      "query_id": "kw07",
+      "query": "pink heels",
+      "product_id": "24819",
+      "name": "Carlton London Women Peach Casual Shoes",
+      "auto_grade": 0,
+      "human_grade": 2
+    },
+    {
+      "key": "kw17:33163",
+      "query_id": "kw17",
+      "query": "yellow top",
+      "product_id": "33163",
+      "name": "Sepia Women Yellow Top",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "de14:54842",
+      "query_id": "de14",
+      "query": "jewellery for a festive occasion",
+      "product_id": "54842",
+      "name": "Ivory Tag Women Rock Array Blue and Red Jewellery Set",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "kw15:2363",
+      "query_id": "kw15",
+      "query": "backpack",
+      "product_id": "2363",
+      "name": "ADIDAS Black Backpack",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "kw03:57932",
+      "query_id": "kw03",
+      "query": "white tshirt for men",
+      "product_id": "57932",
+      "name": "French Connection Men White T-shirt",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "sy06:33114",
+      "query_id": "sy06",
+      "query": "stilettos",
+      "product_id": "33114",
+      "name": "Catwalk Women Black Sandals",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "kw14:46006",
+      "query_id": "kw14",
+      "query": "red saree",
+      "product_id": "46006",
+      "name": "Fabindia Magenta & Orange Striped Saree Mangalgiri Saree",
+      "auto_grade": 1,
+      "human_grade": 2
+    },
+    {
+      "key": "kw12:24377",
+      "query_id": "kw12",
+      "query": "green kurta",
+      "product_id": "24377",
+      "name": "Folklore Women Green  Kurta",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "sy10:30228",
+      "query_id": "sy10",
+      "query": "pullover",
+      "product_id": "30228",
+      "name": "John Miller Men Striped Black Shirt",
+      "auto_grade": 0,
+      "human_grade": 0
+    },
+    {
+      "key": "de07:33969",
+      "query_id": "de07",
+      "query": "outfit for a wedding guest",
+      "product_id": "33969",
+      "name": "Femella Women Black Dress",
+      "auto_grade": 2,
+      "human_grade": 1
+    },
+    {
+      "key": "sy03:16960",
+      "query_id": "sy03",
+      "query": "shades",
+      "product_id": "16960",
+      "name": "Image Men Classic Eyewear Black Sunglasses",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "de02:31074",
+      "query_id": "de02",
+      "query": "traditional outfit for women",
+      "product_id": "31074",
+      "name": "Fabindia Off White Embroidered Traditional Cotton Saree",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "sy12:10006",
+      "query_id": "sy12",
+      "query": "tee",
+      "product_id": "10006",
+      "name": "Nike Men AS T90 Black Tshirts",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "sy04:48326",
+      "query_id": "sy04",
+      "query": "purse",
+      "product_id": "48326",
+      "name": "Pitaraa Women Maroon Purse",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "de01:23483",
+      "query_id": "de01",
+      "query": "something warm for winter",
+      "product_id": "23483",
+      "name": "Arrow Men Blue Check Scarf",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "de06:19917",
+      "query_id": "de06",
+      "query": "something to carry my laptop in",
+      "product_id": "19917",
+      "name": "Wildcraft Unisex Black Backpack",
+      "auto_grade": 1,
+      "human_grade": 2
+    },
+    {
+      "key": "kw02:33307",
+      "query_id": "kw02",
+      "query": "blue jeans",
+      "product_id": "33307",
+      "name": "Gini and Jony Boys Washed Grey Jeans",
+      "auto_grade": 1,
+      "human_grade": 0
+    },
+    {
+      "key": "sy14:1792",
+      "query_id": "sy14",
+      "query": "rucksack",
+      "product_id": "1792",
+      "name": "Newfeel Marine Blue Bag",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "kw16:13678",
+      "query_id": "kw16",
+      "query": "sports shoes for women",
+      "product_id": "13678",
+      "name": "ADIDAS Women Blazer Sports Shoes",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "sy09:15628",
+      "query_id": "sy09",
+      "query": "hoodie",
+      "product_id": "15628",
+      "name": "Nike Men AS Squad FT FZ Hoody Black Sweatshirt",
+      "auto_grade": 2,
+      "human_grade": 2
+    },
+    {
+      "key": "sy08:28457",
+      "query_id": "sy08",
+      "query": "joggers",
+      "product_id": "28457",
+      "name": "Urban Yoga Women Black Capris",
+      "auto_grade": 0,
+      "human_grade": 0
+    }
+  ]
+}

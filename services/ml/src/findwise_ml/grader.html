@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Findwise Grader</title>
+<style>
+  :root {
+    --bg: #f7f7f5; --surface: #fff; --border: #e4e4e0; --text: #1c1c1a; --muted: #6b6b66;
+    --accent: #3b5bdb; --g0: #b42318; --g1: #b45309; --g2: #067647;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121212; --surface: #1c1c1c; --border: #2e2e2e; --text: #ececec; --muted: #9a9a9a;
+      --accent: #748ffc; --g0: #f97066; --g1: #fbbf24; --g2: #47cd89;
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 ui-sans-serif, system-ui, -apple-system, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 24px 16px 48px; }
+  header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  h1 { font-size: 18px; margin: 0; }
+  .count { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .bar { height: 4px; background: var(--border); border-radius: 2px; margin: 10px 0 20px; overflow: hidden; }
+  .bar div { height: 100%; background: var(--accent); transition: width .2s; }
+  .label { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0; }
+  .query { font-size: 26px; font-weight: 650; margin: 2px 0 16px; letter-spacing: -0.01em; }
+  .product { display: grid; grid-template-columns: 240px 1fr; gap: 20px; background: var(--surface);
+             border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+  .product img { width: 100%; aspect-ratio: 3/4; object-fit: contain; background: #fff; border-radius: 8px; }
+  .name { font-size: 17px; font-weight: 600; margin: 4px 0 16px; }
+  .rubric { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; font-size: 13px; color: var(--muted); }
+  .rubric b { color: var(--text); }
+  .grades { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 16px; }
+  .grades button { padding: 14px 8px; border-radius: 10px; border: 2px solid var(--border); background: var(--surface);
+                   color: var(--text); font: inherit; font-weight: 600; cursor: pointer; }
+  .grades button small { display: block; font-weight: 400; color: var(--muted); font-size: 12px; }
+  .grades button[data-g="0"].active { border-color: var(--g0); color: var(--g0); }
+  .grades button[data-g="1"].active { border-color: var(--g1); color: var(--g1); }
+  .grades button[data-g="2"].active { border-color: var(--g2); color: var(--g2); }
+  nav { display: flex; justify-content: space-between; margin-top: 14px; }
+  nav button { background: none; border: none; color: var(--accent); font: inherit; cursor: pointer; padding: 4px 0; }
+  nav button:disabled { color: var(--muted); cursor: default; }
+  .hint { color: var(--muted); font-size: 12px; text-align: center; margin-top: 18px; }
+  kbd { border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; font: 12px ui-monospace, monospace; }
+  .done { text-align: center; padding: 48px 0; }
+  .done code { background: var(--surface); border: 1px solid var(--border); padding: 4px 8px; border-radius: 6px; }
+  .error { color: var(--g0); }
+  @media (max-width: 600px) {
+    .product { grid-template-columns: 1fr; }
+    .product img { max-height: 320px; }
+    .query { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<main id="app"><p class="count">Loading…</p></main>
+<script>
+const app = document.getElementById('app');
+let items = [];
+let index = 0;
+
+const graded = () => items.filter((i) => i.human_grade !== null).length;
+const nextUngraded = (from) => {
+  for (let k = 1; k <= items.length; k++) {
+    const j = (from + k) % items.length;
+    if (items[j].human_grade === null) return j;
+  }
+  return -1;
+};
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+}
+
+function render() {
+  const done = graded();
+  const header = `
+    <header><h1>Findwise relevance grading</h1><span class="count">${done} / ${items.length} graded</span></header>
+    <div class="bar"><div style="width:${(done / items.length) * 100}%"></div></div>`;
+
+  if (index === -1) {
+    app.innerHTML = header + `
+      <div class="done">
+        <h2>All ${items.length} graded. Thank you!</h2>
+        <p>You can close this tab.</p>
+        <p>Your grades are saved. Compute agreement with <code>pnpm grade --report</code></p>
+        <nav style="justify-content:center"><button id="review">Review grades</button></nav>
+      </div>`;
+    document.getElementById('review').onclick = () => { index = 0; render(); };
+    return;
+  }
+
+  const item = items[index];
+  const options = [
+    ['0', 'Not relevant', 'wrong product'],
+    ['1', 'Partly', 'related, not a full match'],
+    ['2', 'Exact', 'what was asked for'],
+  ];
+  app.innerHTML = header + `
+    <p class="label">Shopper searched for</p>
+    <p class="query">“${escapeHtml(item.query)}”</p>
+    <div class="product">
+      <img src="/images/${encodeURIComponent(item.product_id)}.jpg" alt="${escapeHtml(item.name)}">
+      <div>
+        <p class="label">Result</p>
+        <p class="name">${escapeHtml(item.name)}</p>
+        <ul class="rubric">
+          <li><b>2 Exact:</b> a shopper would be happy to see this for the query.</li>
+          <li><b>1 Partly:</b> right idea, but misses something asked for (colour, gender, type).</li>
+          <li><b>0 Not relevant:</b> a shopper would see this as a wrong result.</li>
+          <li>Judge the product itself; product labels can be wrong.</li>
+        </ul>
+        <div class="grades">
+          ${options.map(([g, title, sub]) => `
+            <button data-g="${g}" class="${String(item.human_grade) === g ? 'active' : ''}">${g} · ${title}<small>${sub}</small></button>`).join('')}
+        </div>
+      </div>
+    </div>
+    <nav>
+      <button id="prev" ${index === 0 ? 'disabled' : ''}>← Previous</button>
+      <span class="count">${index + 1} of ${items.length}</span>
+      <button id="next" ${index === items.length - 1 ? 'disabled' : ''}>Next →</button>
+    </nav>
+    <p class="hint">Keys: <kbd>0</kbd> <kbd>1</kbd> <kbd>2</kbd> to grade · <kbd>←</kbd> <kbd>→</kbd> to move</p>
+    <p class="error" id="error"></p>`;
+
+  app.querySelectorAll('.grades button').forEach((b) => (b.onclick = () => grade(Number(b.dataset.g))));
+  document.getElementById('prev').onclick = () => move(-1);
+  document.getElementById('next').onclick = () => move(1);
+}
+
+function move(step) {
+  index = Math.min(Math.max(index + step, 0), items.length - 1);
+  render();
+}
+
+async function grade(g) {
+  const item = items[index];
+  try {
+    const res = await fetch('/grade', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ key: item.key, grade: g }),
+    });
+    if (!res.ok) throw new Error(`Save failed (${res.status})`);
+  } catch (e) {
+    document.getElementById('error').textContent = `${e.message}. Is the grader still running?`;
+    return;
+  }
+  item.human_grade = g;
+  // Prefer the next ungraded item; when re-grading (everything already graded), walk forward in order.
+  const next = nextUngraded(index);
+  index = next !== -1 ? next : index + 1 < items.length ? index + 1 : -1;
+  render();
+}
+
+document.addEventListener('keydown', (e) => {
+  if (index === -1 || e.metaKey || e.ctrlKey) return;
+  if (['0', '1', '2'].includes(e.key)) grade(Number(e.key));
+  else if (e.key === 'ArrowLeft') move(-1);
+  else if (e.key === 'ArrowRight') move(1);
+});
+
+fetch('/items')
+  .then((r) => r.json())
+  .then((data) => {
+    items = data;
+    const firstUngraded = nextUngraded(items.length - 1);
+    index = firstUngraded === -1 ? 0 : firstUngraded;
+    render();
+  })
+  .catch(() => (app.innerHTML = '<p class="error">Could not load items. Is the grader running?</p>'));
+</script>
+</body>
+</html>

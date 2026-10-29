@@ -1,22 +1,22 @@
 # Findwise relevance evaluation
 
-Run 2026-10-29T09:53:20+00:00 on commit `0fd4144`. 50 queries, metrics at k=10 (MRR within the top 50).
+Run 2026-10-29T10:29:57+00:00 on commit `c4514e7`. 50 queries, metrics at k=10 (MRR within the top 50).
 
 ## nDCG@10 by query type
 
 | Query type | n | Lexical | Vector | Hybrid |
 | --- | --- | --- | --- | --- |
 | Keyword | 17 | 0.918 | 0.740 | **0.940** |
-| Synonym | 16 | 0.530 | **0.893** | 0.837 |
+| Synonym | 16 | 0.539 | **0.897** | 0.837 |
 | Descriptive | 17 | 0.158 | 0.689 | **0.704** |
-| **All** | 50 | 0.536 | 0.772 | **0.826** |
+| **All** | 50 | 0.539 | 0.773 | **0.826** |
 
 ## All metrics, all queries
 
 | Mode | nDCG@10 | Precision@10 | MRR |
 | --- | --- | --- | --- |
-| Lexical | 0.536 | 0.540 | 0.598 |
-| Vector | 0.772 | 0.824 | 0.853 |
+| Lexical | 0.539 | 0.544 | 0.608 |
+| Vector | 0.773 | 0.828 | 0.853 |
 | Hybrid | 0.826 | 0.844 | 0.885 |
 
 ## Head to head (nDCG@10, ties within ±0.01)
@@ -61,7 +61,7 @@ Run 2026-10-29T09:53:20+00:00 on commit `0fd4144`. 50 queries, metrics at k=10 (
 | sy12 | tee | 7,068 | 0.86 | 1.00 | 0.91 |
 | sy13 | spectacles | 1,073 | 0.00 | 0.91 | 0.91 |
 | sy14 | rucksack | 735 | 1.00 | 1.00 | 1.00 |
-| sy15 | pumps for women | 1,822 | 0.65 | 0.84 | 1.00 |
+| sy15 | pumps for women | 2,155 | 0.80 | 0.89 | 1.00 |
 | sy16 | billfold | 928 | 0.22 | 1.00 | 1.00 |
 | de01 | something warm for winter | 1,011 | 0.00 | 0.24 | 0.24 |
 | de02 | traditional outfit for women | 2,723 | 0.22 | 1.00 | 1.00 |
