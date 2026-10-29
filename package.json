@@ -7,6 +7,7 @@
     "embedder": "cd services/ml && uv run findwise-embedder",
     "ingest": "cd services/ml && uv run findwise-ingest",
     "api": "pnpm --filter @findwise/api dev",
-    "web": "pnpm --filter @findwise/web dev"
+    "web": "pnpm --filter @findwise/web dev",
+    "eval": "cd services/ml && uv run findwise-eval"
   }
 }

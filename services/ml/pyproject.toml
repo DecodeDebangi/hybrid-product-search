@@ -18,6 +18,7 @@ dependencies = [
 [project.scripts]
 findwise-embedder = "findwise_ml.server:main"
 findwise-ingest = "findwise_ml.ingest:main"
+findwise-eval = "findwise_ml.evaluate:main"
 
 [build-system]
 requires = ["hatchling"]

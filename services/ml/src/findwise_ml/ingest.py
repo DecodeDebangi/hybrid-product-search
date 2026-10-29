@@ -10,10 +10,10 @@ from datasets import load_dataset
 from tqdm import tqdm
 
 from .embedder import ClipEmbedder
+from .paths import REPO_ROOT
 from .solr_schema import ensure_schema
 
 DATASET = "ashraq/fashion-product-images-small"
-REPO_ROOT = Path(__file__).resolve().parents[4]
 
 
 def batched(iterable, size):
