@@ -52,6 +52,7 @@ pnpm ingest                    # downloads dataset + CLIP, embeds and indexes ~4
 pnpm embedder                  # CLIP service on :8001
 pnpm api                       # API on :4000 (watch mode)
 pnpm web                       # UI on http://localhost:3100
+pnpm eval                      # relevance report → eval/results/latest.md
 ```
 
 To pass flags to ingest: `cd services/ml && uv run findwise-ingest --limit 2000`.
@@ -79,7 +80,28 @@ To pass flags to ingest: `cd services/ml && uv run findwise-ingest --limit 2000`
 
 **Sanity check:** searching with a catalog image returns that exact product at rank 1.
 
-_Next: nDCG@10 for lexical vs vector vs hybrid on a labelled query set, and latency under concurrent load._
+### Relevance
+
+50 labelled queries in three groups, scored with nDCG@10 ([full report](eval/results/latest.md)):
+
+| Query type | Example | Lexical | Vector | Hybrid |
+| --- | --- | --- | --- | --- |
+| Keyword (17) | "navy blue shirt" | 0.918 | 0.740 | **0.940** |
+| Synonym (16) | "trainers", "billfold" | 0.530 | **0.893** | 0.837 |
+| Descriptive (17) | "something to carry my laptop in" | 0.158 | 0.689 | **0.704** |
+| **All (50)** | | 0.536 | 0.772 | **0.826** |
+
+- **Hybrid improves nDCG@10 by 54% over BM25** (0.536 → 0.826) and by 7% over vector-only search. Head to head, hybrid beats or ties BM25 on 46 of 50 queries.
+- **BM25 returns no results at all for 13 of 17 descriptive queries.** Its matching rule (edismax, `mm=2<75%`) needs most query terms to appear in the product text, and "something warm for winter" never does. CLIP matches the product image instead.
+- **Hybrid keeps BM25's precision on exact queries.** Vector-only search drops to 0.740 on keyword queries; hybrid reaches 0.940.
+- **Weakness: on synonym queries, hybrid loses to vector-only** (0.837 vs 0.893). For queries like "shades" and "denims", BM25 contributes off-topic matches and equal-weight RRF ranks them in. Fixing this (weighted or query-aware fusion) is next on the roadmap.
+- **Failure case:** "light summer dress" in vector mode returns kurtas. In Indian catalog usage "dress" often means outfit, and CLIP follows that reading; hybrid recovers about half the loss.
+
+**Method.** A product is relevant when its catalog attributes satisfy the query's rule, for example `article_type ∈ {Laptop Bag, Backpacks, Messenger Bag, Rucksacks}` ([queries.json](eval/queries.json)). Because relevance comes from attributes, the full relevant set for every query is counted in Solr, so the ideal ranking for nDCG is exact rather than estimated from a pool. Every top-5 result is exported to [spot_check.csv](eval/results/spot_check.csv) for manual review. A manual review fixed two rules that were too narrow, and both fixes are logged in `queries.json`. Back-to-back runs give identical scores.
+
+**Limits.** Labels describe category, colour, gender and usage, but not pattern, fabric or style, so queries like "floral print" can't be graded this way. The labels also carry noise: many boys' t-shirts are tagged `Men`, which lowers kw13 in every mode. That's left uncorrected on purpose. BM25 also indexes these same attributes, which if anything favours the lexical baseline.
+
+Run it yourself with `pnpm eval` (API and Solr running).
 
 ## Design decisions and trade-offs
 
@@ -92,7 +114,8 @@ _Next: nDCG@10 for lexical vs vector vs hybrid on a labelled query set, and late
 
 ## Roadmap
 
-- [ ] Offline evaluation: labelled queries, nDCG@10 / recall@50 per mode
+- [x] Offline evaluation: 50 labelled queries, nDCG@10 / Precision@10 / MRR per mode
+- [ ] Weighted or query-aware fusion, so BM25 noise stops hurting synonym queries (measure with `pnpm eval`)
 - [ ] Cross-encoder or CLIP re-ranking stage on the fused top-50
 - [ ] Dockerfiles for API, embedder and web, and a hosted demo
 - [ ] Load test (k6) and publish p50/p95 under concurrency
