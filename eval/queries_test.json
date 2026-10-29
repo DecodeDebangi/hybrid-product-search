@@ -1,0 +1,37 @@
+{
+  "about": "Held-out test set, written and committed before any fusion experiment ran. Never used for choosing or tuning a strategy; only for reporting. Same grading rules as queries.json.",
+  "queries": [
+    { "id": "tk01", "category": "keyword", "query": "black leather wallet", "must": {"article_type": ["Wallets"]}, "should": {"base_colour": ["Black"]} },
+    { "id": "tk02", "category": "keyword", "query": "white sports shoes", "must": {"article_type": ["Sports Shoes"]}, "should": {"base_colour": ["White", "Off White"]} },
+    { "id": "tk03", "category": "keyword", "query": "women blue kurti", "must": {"article_type": ["Kurtis", "Kurtas"], "gender": ["Women"]}, "should": {"base_colour": ["Blue", "Navy Blue", "Turquoise Blue"]} },
+    { "id": "tk04", "category": "keyword", "query": "men brown sandals", "must": {"article_type": ["Sandals", "Sports Sandals"], "gender": ["Men", "Unisex"]}, "should": {"base_colour": ["Brown", "Coffee Brown", "Tan", "Mushroom Brown"]} },
+    { "id": "tk05", "category": "keyword", "query": "gold necklace", "must": {"article_type": ["Necklace and Chains", "Pendant", "Jewellery Set"]}, "should": {"base_colour": ["Gold", "Bronze", "Copper"]} },
+    { "id": "tk06", "category": "keyword", "query": "black laptop bag", "must": {"article_type": ["Laptop Bag"]}, "should": {"base_colour": ["Black"]} },
+    { "id": "tk07", "category": "keyword", "query": "grey sweatshirt", "must": {"article_type": ["Sweatshirts"]}, "should": {"base_colour": ["Grey", "Grey Melange", "Charcoal"]} },
+    { "id": "tk08", "category": "keyword", "query": "women flip flops", "must": {"article_type": ["Flip Flops"], "gender": ["Women", "Unisex"]} },
+    { "id": "tk09", "category": "keyword", "query": "purple nail polish", "must": {"article_type": ["Nail Polish"]}, "should": {"base_colour": ["Purple", "Lavender", "Mauve"]} },
+    { "id": "tk10", "category": "keyword", "query": "red lipstick", "must": {"article_type": ["Lipstick"]}, "should": {"base_colour": ["Red", "Maroon", "Burgundy"]} },
+
+    { "id": "ts01", "category": "synonym", "query": "kicks", "must": {"article_type": ["Casual Shoes", "Sports Shoes"]} },
+    { "id": "ts02", "category": "synonym", "query": "tote", "must": {"article_type": ["Handbags"]} },
+    { "id": "ts03", "category": "synonym", "query": "jumper", "must": {"article_type": ["Sweaters", "Sweatshirts"]} },
+    { "id": "ts04", "category": "synonym", "query": "sliders", "must": {"article_type": ["Flip Flops", "Sandals", "Sports Sandals"]} },
+    { "id": "ts05", "category": "synonym", "query": "chappals", "must": {"article_type": ["Flip Flops", "Sandals", "Sports Sandals", "Flats"]} },
+    { "id": "ts06", "category": "synonym", "query": "scent for women", "must": {"article_type": ["Perfume and Body Mist", "Deodorant", "Fragrance Gift Set"], "gender": ["Women", "Unisex"]} },
+    { "id": "ts07", "category": "synonym", "query": "kohl", "must": {"article_type": ["Kajal and Eyeliner"]} },
+    { "id": "ts08", "category": "synonym", "query": "satchel", "must": {"article_type": ["Handbags", "Messenger Bag", "Laptop Bag"]} },
+    { "id": "ts09", "category": "synonym", "query": "trackies", "must": {"article_type": ["Track Pants", "Tracksuits"]} },
+    { "id": "ts10", "category": "synonym", "query": "wristwatch", "must": {"article_type": ["Watches"]} },
+
+    { "id": "td01", "category": "descriptive", "query": "something to keep the sun out of my eyes", "must": {"article_type": ["Sunglasses", "Caps", "Hat"]}, "should": {"article_type": ["Sunglasses"]} },
+    { "id": "td02", "category": "descriptive", "query": "clothes for a toddler boy", "must": {"gender": ["Boys"], "sub_category": ["Topwear", "Bottomwear", "Apparel Set", "Loungewear and Nightwear"]} },
+    { "id": "td03", "category": "descriptive", "query": "what to wear for yoga", "must": {"usage": ["Sports"], "sub_category": ["Topwear", "Bottomwear", "Apparel Set"]} },
+    { "id": "td04", "category": "descriptive", "query": "something small to carry my essentials on a night out", "must": {"article_type": ["Clutches", "Handbags", "Wallets", "Mobile Pouch"]}, "should": {"article_type": ["Clutches"]} },
+    { "id": "td05", "category": "descriptive", "query": "keep my neck warm", "must": {"article_type": ["Mufflers", "Scarves", "Stoles"]} },
+    { "id": "td06", "category": "descriptive", "query": "something to hold up my trousers", "must": {"article_type": ["Belts", "Suspenders"]} },
+    { "id": "td07", "category": "descriptive", "query": "rainy day essentials", "must": {"article_type": ["Rain Jacket", "Umbrellas"]} },
+    { "id": "td08", "category": "descriptive", "query": "nightwear for men", "must": {"article_type": ["Night suits", "Lounge Pants", "Lounge Shorts", "Lounge Tshirts", "Robe", "Bath Robe"], "gender": ["Men", "Unisex"]} },
+    { "id": "td09", "category": "descriptive", "query": "festive outfit for men", "must": {"usage": ["Ethnic", "Party"], "gender": ["Men"], "sub_category": ["Topwear", "Bottomwear", "Apparel Set"]} },
+    { "id": "td10", "category": "descriptive", "query": "comfortable shoes for walking all day", "must": {"article_type": ["Sports Shoes", "Casual Shoes", "Sandals", "Sports Sandals"]}, "should": {"article_type": ["Sports Shoes", "Casual Shoes"]} }
+  ]
+}
