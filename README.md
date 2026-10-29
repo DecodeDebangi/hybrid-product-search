@@ -57,7 +57,20 @@ pnpm eval                      # relevance report → eval/results/latest.md
 pnpm grade                     # blind human grading UI on :8002; `pnpm grade --report` for agreement
 ```
 
-To pass flags to ingest: `cd services/ml && uv run product-search-ingest --limit 2000`.
+To pass flags to ingest: `cd services/ml && uv run --extra ingest product-search-ingest --limit 2000`.
+
+### Running everything in Docker
+
+The same stack runs fully containerised, with the embedder on CPU, on any machine with Docker and about 4 GB of free memory.
+
+```bash
+docker compose --profile app build
+docker compose up -d solr redis
+docker compose run --rm ingest       # CPU-only: ~23 images/s, so ~30 min for the full catalog
+docker compose --profile app up -d   # UI on http://localhost:3100
+```
+
+Only the web UI publishes a port. Next.js forwards `/api` and `/images` to the API inside the Docker network.
 
 ## API
 
@@ -185,7 +198,8 @@ Full reports: [eval/results/type_detection](eval/results/type_detection).
 - [ ] Per-query trust signal between BM25 and CLIP (e.g. score margins or a re-ranker), evaluated on a fresh held-out set
 - [ ] Cross-encoder or CLIP re-ranking stage on the fused top-50
 - [ ] Title embeddings as a third retriever, for occasion and style queries where 60×80 images can't separate a dress from a nightdress. Trade-off: CLIP's text tower is weak at text-to-text matching and BM25 already reads titles, so it needs a fresh query set to justify the extra signal
-- [ ] Dockerfiles for API, embedder and web, and a hosted demo
+- [x] Dockerfiles for API, embedder and web
+- [ ] Hosted demo
 - [ ] Load test (k6) and publish p50/p95 under concurrency
 
 ## Dataset

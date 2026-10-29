@@ -6,7 +6,6 @@ from itertools import islice
 from pathlib import Path
 
 import httpx
-from datasets import load_dataset
 from PIL import Image
 from tqdm import tqdm
 
@@ -55,6 +54,9 @@ def main():
     parser.add_argument("--solr-url", default=os.getenv("SOLR_URL", "http://localhost:8983/solr/products"))
     parser.add_argument("--images-dir", type=Path, default=REPO_ROOT / "data" / "images")
     args = parser.parse_args()
+
+    # Imported here so the rest of the package works without the optional `ingest` extra.
+    from datasets import load_dataset
 
     args.images_dir.mkdir(parents=True, exist_ok=True)
     solr = httpx.Client(base_url=args.solr_url, timeout=60)

@@ -5,7 +5,7 @@
     "infra:up": "docker compose up -d",
     "infra:down": "docker compose down",
     "embedder": "cd services/ml && uv run product-search-embedder",
-    "ingest": "cd services/ml && uv run product-search-ingest",
+    "ingest": "cd services/ml && uv run --extra ingest product-search-ingest",
     "api": "pnpm --filter @hybrid-product-search/api dev",
     "web": "pnpm --filter @hybrid-product-search/web dev",
     "eval": "cd services/ml && uv run product-search-eval",
