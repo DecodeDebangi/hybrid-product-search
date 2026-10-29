@@ -22,12 +22,13 @@ type SolrDoc = Record<string, any>;
 
 @Injectable()
 export class SolrService {
-  lexical(q: string, filters: Filters, limit: number): Promise<SolrResult> {
+  /** With `queryVector`, each match also carries its image similarity to the query. */
+  lexical(q: string, filters: Filters, limit: number, queryVector?: number[]): Promise<SolrResult> {
     return this.select({
       query: q,
       filter: toFilterQueries(filters),
       limit,
-      fields: FIELDS,
+      fields: queryVector ? `${FIELDS},${similarityField(queryVector)}` : FIELDS,
       params: { defType: 'edismax', qf: 'name^3 search_text', pf: 'name^5', mm: '2<75%' },
     });
   }
@@ -41,7 +42,7 @@ export class SolrService {
       query: `{!knn f=image_vector topK=${topK}}[${vector.join(',')}]`,
       filter,
       limit,
-      fields: FIELDS,
+      fields: `${FIELDS},${similarityField(vector)}`,
     });
   }
 
@@ -88,6 +89,11 @@ export class SolrService {
   }
 }
 
+// Same measure the kNN index uses, so BM25 and vector candidates are directly comparable.
+function similarityField(vector: number[]): string {
+  return `similarity:vectorSimilarity(FLOAT32,DOT_PRODUCT,image_vector,[${vector.join(',')}])`;
+}
+
 function toFilterQueries(filters: Filters): string[] {
   return (Object.keys(FILTER_FIELDS) as (keyof Filters)[])
     .filter((key) => filters[key])
@@ -105,6 +111,7 @@ function toProduct(doc: SolrDoc): Product {
     season: doc.season,
     year: doc.year,
     image: `/images/${doc.image_path}`,
+    similarity: doc.similarity,
   };
 }
 

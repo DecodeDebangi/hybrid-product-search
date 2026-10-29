@@ -12,13 +12,14 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { SolrService } from '../infra/solr.service';
 import { MetricsService } from './metrics.service';
-import { SearchService } from './search.service';
-import type { Filters, Mode } from './types';
+import { DEFAULT_FUSION, SearchService } from './search.service';
+import type { Filters, Fusion, FusionOptions, Mode } from './types';
 
 const MODES: Mode[] = ['lexical', 'vector', 'hybrid'];
+const FUSIONS: Fusion[] = ['rrf', 'weighted', 'verified'];
 const MAX_UPLOAD_BYTES = 5 * 1024 * 1024;
 
-type SearchQuery = Filters & { q?: string; mode?: string; limit?: string };
+type SearchQuery = Filters & { q?: string; mode?: string; limit?: string; fusion?: string; lexicalWeight?: string };
 
 @Controller()
 export class SearchController {
@@ -34,7 +35,7 @@ export class SearchController {
     if (!q) throw new BadRequestException('q is required');
     const mode = (query.mode ?? 'hybrid') as Mode;
     if (!MODES.includes(mode)) throw new BadRequestException(`mode must be one of ${MODES.join(', ')}`);
-    return this.search.search(q, mode, pickFilters(query), parseLimit(query.limit));
+    return this.search.search(q, mode, pickFilters(query), parseLimit(query.limit), parseFusion(query));
   }
 
   @Post('search/image')
@@ -59,6 +60,14 @@ export class SearchController {
   stats() {
     return this.metrics.snapshot();
   }
+}
+
+function parseFusion({ fusion, lexicalWeight }: SearchQuery): FusionOptions {
+  const strategy = (fusion ?? DEFAULT_FUSION.strategy) as Fusion;
+  if (!FUSIONS.includes(strategy)) throw new BadRequestException(`fusion must be one of ${FUSIONS.join(', ')}`);
+  const weight = lexicalWeight === undefined ? 0.5 : Number(lexicalWeight);
+  if (!(weight >= 0 && weight <= 1)) throw new BadRequestException('lexicalWeight must be between 0 and 1');
+  return { strategy, lexicalWeight: weight };
 }
 
 function pickFilters({ gender, articleType, baseColour, usage }: Filters): Filters {

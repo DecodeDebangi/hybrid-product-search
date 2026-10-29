@@ -15,3 +15,15 @@ test('a single list keeps its original order', () => {
   const fused = reciprocalRankFusion([{ source: 'vector', ids: ['x', 'y', 'z'] }]);
   assert.deepEqual(fused.map((f) => f.id), ['x', 'y', 'z']);
 });
+
+test('weights scale each list\'s contribution', () => {
+  const fused = reciprocalRankFusion(
+    [
+      { source: 'lexical', ids: ['a'] },
+      { source: 'vector', ids: ['b'] },
+    ],
+    60,
+    { lexical: 0.5 },
+  );
+  assert.deepEqual(fused.map((f) => f.id), ['b', 'a']);
+});

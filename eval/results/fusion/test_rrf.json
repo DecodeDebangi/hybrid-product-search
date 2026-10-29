@@ -1,0 +1,725 @@
+{
+  "meta": {
+    "timestamp": "2026-10-29T10:41:59+00:00",
+    "commit": "f0e778a",
+    "queries": 30,
+    "query_set": "queries_test.json",
+    "fusion": {
+      "fusion": "rrf"
+    }
+  },
+  "summary": {
+    "means": {
+      "keyword": {
+        "lexical": {
+          "ndcg": 0.9554669633544527,
+          "precision": 0.98,
+          "mrr": 1.0
+        },
+        "vector": {
+          "ndcg": 0.7902136428381172,
+          "precision": 0.85,
+          "mrr": 0.8833333333333333
+        },
+        "hybrid": {
+          "ndcg": 0.9811472573046678,
+          "precision": 0.98,
+          "mrr": 1.0
+        }
+      },
+      "synonym": {
+        "lexical": {
+          "ndcg": 0.18978399023544412,
+          "precision": 0.17,
+          "mrr": 0.25
+        },
+        "vector": {
+          "ndcg": 0.6886222119211844,
+          "precision": 0.66,
+          "mrr": 0.8055555555555556
+        },
+        "hybrid": {
+          "ndcg": 0.679835638001319,
+          "precision": 0.66,
+          "mrr": 0.825
+        }
+      },
+      "descriptive": {
+        "lexical": {
+          "ndcg": 0.15705333063531712,
+          "precision": 0.14,
+          "mrr": 0.2
+        },
+        "vector": {
+          "ndcg": 0.28978788482702206,
+          "precision": 0.34,
+          "mrr": 0.3905128205128205
+        },
+        "hybrid": {
+          "ndcg": 0.405329807583041,
+          "precision": 0.45,
+          "mrr": 0.4655128205128205
+        }
+      },
+      "all": {
+        "lexical": {
+          "ndcg": 0.43410142807507135,
+          "precision": 0.43,
+          "mrr": 0.48333333333333334
+        },
+        "vector": {
+          "ndcg": 0.5895412465287746,
+          "precision": 0.6166666666666667,
+          "mrr": 0.6931339031339031
+        },
+        "hybrid": {
+          "ndcg": 0.6887709009630092,
+          "precision": 0.6966666666666667,
+          "mrr": 0.7635042735042735
+        }
+      }
+    },
+    "hybrid_vs_lexical": {
+      "wins": 18,
+      "ties": 10,
+      "losses": 2
+    },
+    "hybrid_vs_vector": {
+      "wins": 12,
+      "ties": 15,
+      "losses": 3
+    }
+  },
+  "queries": [
+    {
+      "id": "tk01",
+      "category": "keyword",
+      "query": "black leather wallet",
+      "relevant_in_catalog": 928,
+      "lexical": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.858515756018057,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "tk02",
+      "category": "keyword",
+      "query": "white sports shoes",
+      "relevant_in_catalog": 2016,
+      "lexical": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.4447154158345467,
+        "precision": 0.6,
+        "mrr": 0.5
+      },
+      "hybrid": {
+        "ndcg": 0.933745776545611,
+        "precision": 0.9,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "tk03",
+      "category": "keyword",
+      "query": "women blue kurti",
+      "relevant_in_catalog": 1993,
+      "lexical": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.955830517697074,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "tk04",
+      "category": "keyword",
+      "query": "men brown sandals",
+      "relevant_in_catalog": 878,
+      "lexical": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "tk05",
+      "category": "keyword",
+      "query": "gold necklace",
+      "relevant_in_catalog": 394,
+      "lexical": {
+        "ndcg": 0.9074250374176303,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.9069212362975007,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "tk06",
+      "category": "keyword",
+      "query": "black laptop bag",
+      "relevant_in_catalog": 82,
+      "lexical": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.8389574121760601,
+        "precision": 0.8,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "tk07",
+      "category": "keyword",
+      "query": "grey sweatshirt",
+      "relevant_in_catalog": 285,
+      "lexical": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.8415908474314975,
+        "precision": 0.8,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "tk08",
+      "category": "keyword",
+      "query": "women flip flops",
+      "relevant_in_catalog": 395,
+      "lexical": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.33217371108897287,
+        "precision": 0.4,
+        "mrr": 0.3333333333333333
+      },
+      "hybrid": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "tk09",
+      "category": "keyword",
+      "query": "purple nail polish",
+      "relevant_in_catalog": 278,
+      "lexical": {
+        "ndcg": 0.8030118016223006,
+        "precision": 0.8,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.8589241543392643,
+        "precision": 0.9,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.92663607790064,
+        "precision": 0.9,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "tk10",
+      "category": "keyword",
+      "query": "red lipstick",
+      "relevant_in_catalog": 260,
+      "lexical": {
+        "ndcg": 0.8442327945045964,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.8645073774981994,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.9510907186004267,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "ts01",
+      "category": "synonym",
+      "query": "kicks",
+      "relevant_in_catalog": 4861,
+      "lexical": {
+        "ndcg": 0.0,
+        "precision": 0.0,
+        "mrr": 0.0
+      },
+      "vector": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.6698623505528798,
+        "precision": 0.8,
+        "mrr": 0.5
+      }
+    },
+    {
+      "id": "ts02",
+      "category": "synonym",
+      "query": "tote",
+      "relevant_in_catalog": 1759,
+      "lexical": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "ts03",
+      "category": "synonym",
+      "query": "jumper",
+      "relevant_in_catalog": 562,
+      "lexical": {
+        "ndcg": 0.0,
+        "precision": 0.0,
+        "mrr": 0.0
+      },
+      "vector": {
+        "ndcg": 0.22400556151517553,
+        "precision": 0.2,
+        "mrr": 0.5
+      },
+      "hybrid": {
+        "ndcg": 0.16104258782393982,
+        "precision": 0.2,
+        "mrr": 0.25
+      }
+    },
+    {
+      "id": "ts04",
+      "category": "synonym",
+      "query": "sliders",
+      "relevant_in_catalog": 1876,
+      "lexical": {
+        "ndcg": 0.0,
+        "precision": 0.0,
+        "mrr": 0.0
+      },
+      "vector": {
+        "ndcg": 0.8701249883466592,
+        "precision": 0.8,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.8701249883466592,
+        "precision": 0.8,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "ts05",
+      "category": "synonym",
+      "query": "chappals",
+      "relevant_in_catalog": 2376,
+      "lexical": {
+        "ndcg": 0.0,
+        "precision": 0.0,
+        "mrr": 0.0
+      },
+      "vector": {
+        "ndcg": 0.6691255538181726,
+        "precision": 0.6,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.6691255538181726,
+        "precision": 0.6,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "ts06",
+      "category": "synonym",
+      "query": "scent for women",
+      "relevant_in_catalog": 437,
+      "lexical": {
+        "ndcg": 0.0,
+        "precision": 0.0,
+        "mrr": 0.0
+      },
+      "vector": {
+        "ndcg": 0.49545888247018083,
+        "precision": 0.5,
+        "mrr": 0.5
+      },
+      "hybrid": {
+        "ndcg": 0.49545888247018083,
+        "precision": 0.5,
+        "mrr": 0.5
+      }
+    },
+    {
+      "id": "ts07",
+      "category": "synonym",
+      "query": "kohl",
+      "relevant_in_catalog": 94,
+      "lexical": {
+        "ndcg": 0.46900009332067477,
+        "precision": 0.3,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.0,
+        "precision": 0.0,
+        "mrr": 0.05555555555555555
+      },
+      "hybrid": {
+        "ndcg": 0.41528076708874123,
+        "precision": 0.3,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "ts08",
+      "category": "synonym",
+      "query": "satchel",
+      "relevant_in_catalog": 1885,
+      "lexical": {
+        "ndcg": 0.4288398090337664,
+        "precision": 0.4,
+        "mrr": 0.5
+      },
+      "vector": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.8899541168509599,
+        "precision": 0.9,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "ts09",
+      "category": "synonym",
+      "query": "trackies",
+      "relevant_in_catalog": 333,
+      "lexical": {
+        "ndcg": 0.0,
+        "precision": 0.0,
+        "mrr": 0.0
+      },
+      "vector": {
+        "ndcg": 0.6275071330616557,
+        "precision": 0.5,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.6275071330616557,
+        "precision": 0.5,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "ts10",
+      "category": "synonym",
+      "query": "wristwatch",
+      "relevant_in_catalog": 2542,
+      "lexical": {
+        "ndcg": 0.0,
+        "precision": 0.0,
+        "mrr": 0.0
+      },
+      "vector": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 1.0,
+        "precision": 1.0,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "td01",
+      "category": "descriptive",
+      "query": "something to keep the sun out of my eyes",
+      "relevant_in_catalog": 1359,
+      "lexical": {
+        "ndcg": 0.0,
+        "precision": 0.0,
+        "mrr": 0.0
+      },
+      "vector": {
+        "ndcg": 0.43042149375026456,
+        "precision": 0.5,
+        "mrr": 0.5
+      },
+      "hybrid": {
+        "ndcg": 0.43042149375026456,
+        "precision": 0.5,
+        "mrr": 0.5
+      }
+    },
+    {
+      "id": "td02",
+      "category": "descriptive",
+      "query": "clothes for a toddler boy",
+      "relevant_in_catalog": 749,
+      "lexical": {
+        "ndcg": 0.6489315753318465,
+        "precision": 0.5,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.46627747176364104,
+        "precision": 0.4,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.8521705090845474,
+        "precision": 0.8,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "td03",
+      "category": "descriptive",
+      "query": "what to wear for yoga",
+      "relevant_in_catalog": 1551,
+      "lexical": {
+        "ndcg": 0.0,
+        "precision": 0.0,
+        "mrr": 0.0
+      },
+      "vector": {
+        "ndcg": 0.0,
+        "precision": 0.0,
+        "mrr": 0.038461538461538464
+      },
+      "hybrid": {
+        "ndcg": 0.0,
+        "precision": 0.0,
+        "mrr": 0.038461538461538464
+      }
+    },
+    {
+      "id": "td04",
+      "category": "descriptive",
+      "query": "something small to carry my essentials on a night out",
+      "relevant_in_catalog": 3022,
+      "lexical": {
+        "ndcg": 0.0,
+        "precision": 0.0,
+        "mrr": 0.0
+      },
+      "vector": {
+        "ndcg": 0.12966028316723271,
+        "precision": 0.5,
+        "mrr": 0.25
+      },
+      "hybrid": {
+        "ndcg": 0.12966028316723271,
+        "precision": 0.5,
+        "mrr": 0.25
+      }
+    },
+    {
+      "id": "td05",
+      "category": "descriptive",
+      "query": "keep my neck warm",
+      "relevant_in_catalog": 247,
+      "lexical": {
+        "ndcg": 0.0,
+        "precision": 0.0,
+        "mrr": 0.0
+      },
+      "vector": {
+        "ndcg": 0.21801641453242446,
+        "precision": 0.3,
+        "mrr": 0.16666666666666666
+      },
+      "hybrid": {
+        "ndcg": 0.21801641453242446,
+        "precision": 0.3,
+        "mrr": 0.16666666666666666
+      }
+    },
+    {
+      "id": "td06",
+      "category": "descriptive",
+      "query": "something to hold up my trousers",
+      "relevant_in_catalog": 853,
+      "lexical": {
+        "ndcg": 0.0,
+        "precision": 0.0,
+        "mrr": 0.0
+      },
+      "vector": {
+        "ndcg": 0.0,
+        "precision": 0.0,
+        "mrr": 0.0
+      },
+      "hybrid": {
+        "ndcg": 0.0,
+        "precision": 0.0,
+        "mrr": 0.0
+      }
+    },
+    {
+      "id": "td07",
+      "category": "descriptive",
+      "query": "rainy day essentials",
+      "relevant_in_catalog": 13,
+      "lexical": {
+        "ndcg": 0.0,
+        "precision": 0.0,
+        "mrr": 0.0
+      },
+      "vector": {
+        "ndcg": 0.4767487015278744,
+        "precision": 0.5,
+        "mrr": 0.5
+      },
+      "hybrid": {
+        "ndcg": 0.4767487015278744,
+        "precision": 0.5,
+        "mrr": 0.5
+      }
+    },
+    {
+      "id": "td08",
+      "category": "descriptive",
+      "query": "nightwear for men",
+      "relevant_in_catalog": 123,
+      "lexical": {
+        "ndcg": 0.9216017310213247,
+        "precision": 0.9,
+        "mrr": 1.0
+      },
+      "vector": {
+        "ndcg": 0.15139734109601005,
+        "precision": 0.2,
+        "mrr": 0.2
+      },
+      "hybrid": {
+        "ndcg": 0.9305687780632227,
+        "precision": 0.9,
+        "mrr": 1.0
+      }
+    },
+    {
+      "id": "td09",
+      "category": "descriptive",
+      "query": "festive outfit for men",
+      "relevant_in_catalog": 107,
+      "lexical": {
+        "ndcg": 0.0,
+        "precision": 0.0,
+        "mrr": 0.0
+      },
+      "vector": {
+        "ndcg": 0.09478836436955079,
+        "precision": 0.1,
+        "mrr": 0.25
+      },
+      "hybrid": {
+        "ndcg": 0.085143117641621,
+        "precision": 0.1,
+        "mrr": 0.2
+      }
+    },
+    {
+      "id": "td10",
+      "category": "descriptive",
+      "query": "comfortable shoes for walking all day",
+      "relevant_in_catalog": 5823,
+      "lexical": {
+        "ndcg": 0.0,
+        "precision": 0.0,
+        "mrr": 0.0
+      },
+      "vector": {
+        "ndcg": 0.9305687780632227,
+        "precision": 0.9,
+        "mrr": 1.0
+      },
+      "hybrid": {
+        "ndcg": 0.9305687780632227,
+        "precision": 0.9,
+        "mrr": 1.0
+      }
+    }
+  ]
+}

@@ -65,8 +65,9 @@ class Solr:
         return {doc["id"]: doc for doc in res.json()["response"]["docs"]}
 
 
-def search(api: httpx.Client, query: str, mode: str) -> list[str]:
-    res = api.get("/api/search", params={"q": query, "mode": mode, "limit": DEPTH})
+def search(api: httpx.Client, query: str, mode: str, fusion: dict[str, str]) -> list[str]:
+    params = {"q": query, "mode": mode, "limit": DEPTH, **(fusion if mode == "hybrid" else {})}
+    res = api.get("/api/search", params=params)
     res.raise_for_status()
     return [hit["id"] for hit in res.json()["hits"]]
 
@@ -79,7 +80,9 @@ def git_sha() -> str:
         return "unknown"
 
 
-def evaluate(queries: list[dict], api: httpx.Client, solr: Solr) -> tuple[list[dict], list[dict]]:
+def evaluate(
+    queries: list[dict], api: httpx.Client, solr: Solr, fusion: dict[str, str]
+) -> tuple[list[dict], list[dict]]:
     rows, spot_checks = [], []
     for q in queries:
         n_relevant = solr.count(q["must"])
@@ -89,7 +92,7 @@ def evaluate(queries: list[dict], api: httpx.Client, solr: Solr) -> tuple[list[d
 
         row = {"id": q["id"], "category": q["category"], "query": q["query"], "relevant_in_catalog": n_relevant}
         for mode in MODES:
-            ids = search(api, q["query"], mode)
+            ids = search(api, q["query"], mode, fusion)
             docs = solr.attributes(ids)
             grades = [grade(docs.get(i, {}), q) for i in ids]
             row[mode] = score(grades, n_relevant, n_perfect)
@@ -142,7 +145,8 @@ def render_markdown(summary: dict, rows: list[dict], meta: dict) -> str:
         "# Findwise relevance evaluation",
         "",
         f"Run {meta['timestamp']} on commit `{meta['commit']}`. "
-        f"{meta['queries']} queries, metrics at k={K} (MRR within the top {DEPTH}).",
+        f"{meta['queries']} queries from `{meta['query_set']}`, hybrid fusion `{meta['fusion']}`, "
+        f"metrics at k={K} (MRR within the top {DEPTH}).",
         "",
         "## nDCG@10 by query type",
         "",
@@ -204,13 +208,22 @@ def main():
     parser.add_argument("--solr-url", default=os.getenv("SOLR_URL", "http://localhost:8983/solr/products"))
     parser.add_argument("--queries", type=Path, default=REPO_ROOT / "eval" / "queries.json")
     parser.add_argument("--out-dir", type=Path, default=REPO_ROOT / "eval" / "results")
+    parser.add_argument("--fusion", choices=["rrf", "weighted", "verified"], help="hybrid fusion strategy")
+    parser.add_argument("--lexical-weight", help="BM25 weight for --fusion weighted")
     args = parser.parse_args()
 
     queries = json.loads(args.queries.read_text())["queries"]
     api = httpx.Client(base_url=args.api_url, timeout=60)
-    rows, spot_checks = evaluate(queries, api, Solr(args.solr_url))
+    fusion = {k: v for k, v in {"fusion": args.fusion, "lexicalWeight": args.lexical_weight}.items() if v}
+    rows, spot_checks = evaluate(queries, api, Solr(args.solr_url), fusion)
     summary = summarize(rows)
-    meta = {"timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"), "commit": git_sha(), "queries": len(rows)}
+    meta = {
+        "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "commit": git_sha(),
+        "queries": len(rows),
+        "query_set": args.queries.name,
+        "fusion": fusion or {"fusion": "rrf"},
+    }
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
     (args.out_dir / "latest.json").write_text(json.dumps({"meta": meta, "summary": summary, "queries": rows}, indent=2))

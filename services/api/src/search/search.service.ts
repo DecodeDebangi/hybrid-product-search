@@ -3,10 +3,14 @@ import { EmbedderService } from '../infra/embedder.service';
 import { round, SolrResult, SolrService } from '../infra/solr.service';
 import { MetricsService } from './metrics.service';
 import { RankedList, reciprocalRankFusion } from './rrf';
-import type { Filters, Mode, Product, SearchResponse, Timings } from './types';
+import type { Filters, FusionOptions, Mode, Product, SearchResponse, Source, Timings } from './types';
+import { verifyLexical } from './verify';
 
 // Each retriever contributes this many candidates before fusion.
 const HYBRID_CANDIDATES = 100;
+const RRF_K = 60;
+
+export const DEFAULT_FUSION: FusionOptions = { strategy: 'rrf', lexicalWeight: 1 };
 
 @Injectable()
 export class SearchService {
@@ -16,26 +20,48 @@ export class SearchService {
     private readonly metrics: MetricsService,
   ) {}
 
-  async search(q: string, mode: Mode, filters: Filters, limit: number): Promise<SearchResponse> {
+  async search(
+    q: string,
+    mode: Mode,
+    filters: Filters,
+    limit: number,
+    fusion: FusionOptions = DEFAULT_FUSION,
+  ): Promise<SearchResponse> {
     const start = performance.now();
     const pool = mode === 'hybrid' ? Math.max(HYBRID_CANDIDATES, limit) : limit;
+    const verify = mode === 'hybrid' && fusion.strategy === 'verified';
     const timings: Partial<Timings> = {};
-    let embeddingCached: boolean | undefined;
 
-    const [lexical, vector] = await Promise.all([
-      mode !== 'vector' ? this.solr.lexical(q, filters, pool) : undefined,
-      mode !== 'lexical'
-        ? this.embedder.embedText(q).then((embedding) => {
-            timings.embedMs = embedding.ms;
-            embeddingCached = embedding.cached;
-            return this.solr.knn(embedding.vector, filters, pool);
-          })
-        : undefined,
+    const embedding = mode !== 'lexical' ? this.embedder.embedText(q) : undefined;
+    const [lexical, vector, embedded] = await Promise.all([
+      mode === 'vector'
+        ? undefined
+        : verify
+          ? embedding!.then((e) => this.solr.lexical(q, filters, pool, e.vector))
+          : this.solr.lexical(q, filters, pool),
+      embedding?.then((e) => this.solr.knn(e.vector, filters, pool)),
+      embedding,
     ]);
+    timings.embedMs = embedded?.ms;
     timings.lexicalMs = lexical?.ms;
     timings.vectorMs = vector?.ms;
 
-    return this.respond(mode, start, timings, limit, { lexical, vector }, embeddingCached);
+    if (mode !== 'hybrid') {
+      return this.respond(mode, start, timings, limit, { lexical, vector }, {}, embedded?.cached);
+    }
+
+    let fusedLexical = lexical;
+    let droppedLexical: number | undefined;
+    let keptLexical: number | undefined;
+    if (verify && lexical && vector) {
+      const { kept, dropped } = verifyLexical(lexical.products, vector.products);
+      fusedLexical = { ...lexical, products: kept };
+      droppedLexical = dropped;
+      keptLexical = kept.length;
+    }
+    const weights = fusion.strategy === 'weighted' ? { lexical: fusion.lexicalWeight } : {};
+    const response = this.respond(mode, start, timings, limit, { lexical: fusedLexical, vector }, weights, embedded?.cached);
+    return { ...response, fusion: { strategy: fusion.strategy, droppedLexical, keptLexical } };
   }
 
   async searchByImage(file: Express.Multer.File, filters: Filters, limit: number): Promise<SearchResponse> {
@@ -57,6 +83,7 @@ export class SearchService {
     timings: Partial<Timings>,
     limit: number,
     results: { lexical?: SolrResult; vector?: SolrResult },
+    weights: Partial<Record<Source, number>> = {},
     embeddingCached?: boolean,
   ): SearchResponse {
     const products = new Map<string, Product>();
@@ -68,7 +95,7 @@ export class SearchService {
       lists.push({ source, ids: result.products.map((p) => p.id) });
     }
 
-    const hits = reciprocalRankFusion(lists)
+    const hits = reciprocalRankFusion(lists, RRF_K, weights)
       .slice(0, limit)
       .map(({ id, score, ranks }) => ({ ...products.get(id)!, score: round(score * 1000), ranks }));
 

@@ -63,6 +63,7 @@ To pass flags to ingest: `cd services/ml && uv run findwise-ingest --limit 2000`
 | Method | Path | Description |
 | --- | --- | --- |
 | GET | `/api/search?q=&mode=lexical\|vector\|hybrid&gender=&articleType=&baseColour=&usage=&limit=` | Text search |
+| | `&fusion=rrf\|weighted\|verified&lexicalWeight=0.5` | Hybrid fusion strategy (default `rrf`); see [Fusion experiment](#fusion-experiment) |
 | POST | `/api/search/image` (multipart `image`) | Search by image |
 | GET | `/api/products/:id/similar` | Visual neighbours of a product |
 | GET | `/api/facets` | Filter values with counts |
@@ -95,7 +96,7 @@ To pass flags to ingest: `cd services/ml && uv run findwise-ingest --limit 2000`
 - **Hybrid improves nDCG@10 by 53% over BM25** (0.539 → 0.826) and by 7% over vector-only search. Head to head, hybrid beats or ties BM25 on 46 of 50 queries.
 - **BM25 returns no results at all for 13 of 17 descriptive queries.** Its matching rule (edismax, `mm=2<75%`) needs most query terms to appear in the product text, and "something warm for winter" never does. CLIP matches the product image instead.
 - **Hybrid keeps BM25's precision on exact queries.** Vector-only search drops to 0.740 on keyword queries; hybrid reaches 0.940.
-- **Weakness: on synonym queries, hybrid loses to vector-only** (0.837 vs 0.897). For queries like "shades" and "denims", BM25 contributes off-topic matches and equal-weight RRF ranks them in. Fixing this (weighted or query-aware fusion) is next on the roadmap.
+- **Weakness: on synonym queries, hybrid loses to vector-only** (0.837 vs 0.897). For queries like "shades" and "denims", BM25 contributes off-topic matches and equal-weight RRF ranks them in. An attempt to fix this is written up under [Fusion experiment](#fusion-experiment) below; it didn't hold up on held-out queries.
 - **Failure case:** "light summer dress" in vector mode returns kurtas. In Indian catalog usage "dress" often means outfit, and CLIP follows that reading; hybrid recovers about half the loss.
 
 **Method.** A product is relevant when its catalog attributes satisfy the query's rule, for example `article_type ∈ {Laptop Bag, Backpacks, Messenger Bag, Rucksacks}` ([queries.json](eval/queries.json)). Because relevance comes from attributes, the full relevant set for every query is counted in Solr, so the ideal ranking for nDCG is exact rather than estimated from a pool. Every top-5 result is exported to [spot_check.csv](eval/results/spot_check.csv) for manual review. A manual review fixed two rules that were too narrow, and both fixes are logged in `queries.json`. Back-to-back runs give identical scores.
@@ -113,6 +114,29 @@ In 9 of the 13 remaining disagreements, the automatic grader is **stricter** tha
 
 Run it yourself with `pnpm eval` (API and Solr running).
 
+### Fusion experiment
+
+**Problem.** BM25 matches the right word in the wrong sense: "denims" → *Denim* brand deodorant, "trainers" → Puma *Trainer* footballs, "shades" → *Shaded* kurta. Equal-weight RRF ranks BM25's #1 near the top whatever it is.
+
+**Idea: semantic verification.** Before fusing, drop any BM25 match whose image is less similar to the query than the weakest of the 100 vector candidates. The deodorant scores 0.590 against a floor of 0.625 set by jeans, so it goes. The floor comes from the candidate pool itself, so there is no threshold to tune. It's compared with weighted RRF, which down-weights BM25 by a tuned factor.
+
+**Method.** A 30-query held-out set ([queries_test.json](eval/queries_test.json)) was written and committed *before* any experiment ran. Strategies were compared on the original 50 queries; the chosen one was then run once on the held-out 30.
+
+| Hybrid fusion | Dev (50) keyword | synonym | descriptive | **Dev all** | **Held-out (30)** |
+| --- | --- | --- | --- | --- | --- |
+| RRF (default) | 0.940 | 0.837 | 0.704 | 0.826 | **0.689** |
+| Weighted RRF, BM25 × 0.5 | 0.883 | 0.911 | 0.694 | 0.828 | n/a |
+| Weighted RRF, BM25 × 0.75 | 0.918 | 0.908 | 0.694 | 0.839 | n/a |
+| Verified | 0.951 | 0.903 | 0.694 | **0.848** | 0.688 |
+
+**Result: the dev gain didn't generalize.** Verified looked best on the dev set (+0.022), fixing every wrong-sense case above with no tuning, but it tied on the held-out set (5 queries better, 3 worse, 22 the same). The failures share one pattern: verification trusts the vector side to judge, so when CLIP is confidently wrong, correct keyword matches get thrown out.
+- "light summer dress": CLIP reads "dress" as outfit and returns kurtas, so all 100 real dresses from BM25 are rejected (0.55 → 0.06).
+- Held out, "kohl": vector-only scores 0.00, and verification removes the only good results (0.42 → 0.00).
+
+Verification helps when BM25 is wrong and CLIP is right, and hurts by about as much the other way round. Fixing that needs a signal for which retriever to trust *per query*, such as a re-ranker that looks at query and product together. **RRF stays the default.** It's simpler, has lower latency (verification has to wait for the query embedding before running BM25), and ties on unseen queries. `fusion=verified` remains available for comparison. Full reports: [eval/results/fusion](eval/results/fusion).
+
+Note on reproducibility: the very first run of a new query set can differ slightly in vector-only mode on a few queries. Every later run is identical, and all numbers above come from repeated runs. Hybrid scores matched across every run.
+
 ## Design decisions and trade-offs
 
 - **Solr for both BM25 and vectors.** One engine, one set of filters, no consistency problems between two stores. The cost: Solr's kNN is HNSW-only and a little less ergonomic than a dedicated vector DB.
@@ -125,7 +149,8 @@ Run it yourself with `pnpm eval` (API and Solr running).
 ## Roadmap
 
 - [x] Offline evaluation: 50 labelled queries, nDCG@10 / Precision@10 / MRR per mode
-- [ ] Weighted or query-aware fusion, so BM25 noise stops hurting synonym queries (measure with `pnpm eval`)
+- [x] Fusion experiment: weighted RRF and semantic verification, checked on a held-out set (no gain on unseen queries; RRF kept)
+- [ ] Per-query trust signal between BM25 and CLIP (e.g. score margins or a re-ranker), evaluated on a fresh held-out set
 - [ ] Cross-encoder or CLIP re-ranking stage on the fused top-50
 - [ ] Dockerfiles for API, embedder and web, and a hosted demo
 - [ ] Load test (k6) and publish p50/p95 under concurrency
