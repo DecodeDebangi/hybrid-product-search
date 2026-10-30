@@ -45,14 +45,27 @@ flowchart LR
 
 Prerequisites: Docker, Node 20+, pnpm, [uv](https://docs.astral.sh/uv/).
 
+First run:
+
 ```bash
 pnpm install
 pnpm infra:up                  # Solr :8983, Redis :6380
 pnpm ingest                    # downloads dataset + CLIP, embeds and indexes ~44k products
                                # (~8 min on Apple Silicon via MPS; try `--limit 2000` first)
-pnpm embedder                  # CLIP service on :8001
-pnpm api                       # API on :4000 (watch mode)
-pnpm web                       # UI on http://localhost:3100
+```
+
+After that, one command starts everything:
+
+```bash
+pnpm dev                       # Solr + Redis (waits until healthy), then embedder :8001,
+                               # API :4000 and UI http://localhost:3100 in one terminal
+pnpm stop                      # after Ctrl+C: stops the containers; the index is kept
+```
+
+Other commands:
+
+```bash
+pnpm embedder | api | web      # run one service on its own
 pnpm eval                      # relevance report → eval/results/latest.md
 pnpm grade                     # blind human grading UI on :8002; `pnpm grade --report` for agreement
 ```

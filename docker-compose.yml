@@ -13,11 +13,19 @@ services:
       SOLR_HEAP: 1g
     volumes:
       - solr-data:/var/solr
+    healthcheck:
+      # Healthy once the products core answers queries, not just when the JVM is up.
+      test: ["CMD", "curl", "-sf", "http://localhost:8983/solr/products/admin/ping"]
+      interval: 3s
+      start_period: 60s
 
   redis:
     image: redis:7.4-alpine
     ports:
       - "6380:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
 
   embedder:
     profiles: [app]
@@ -40,9 +48,9 @@ services:
       - images:/data/images:ro
     depends_on:
       solr:
-        condition: service_started
+        condition: service_healthy
       redis:
-        condition: service_started
+        condition: service_healthy
       embedder:
         condition: service_healthy
 
@@ -66,7 +74,8 @@ services:
     volumes:
       - images:/data/images
     depends_on:
-      - solr
+      solr:
+        condition: service_healthy
 
 volumes:
   solr-data:

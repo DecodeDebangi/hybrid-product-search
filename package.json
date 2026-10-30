@@ -2,6 +2,8 @@
   "name": "hybrid-product-search",
   "private": true,
   "scripts": {
+    "dev": "docker compose up -d --wait solr redis && concurrently -k -n embedder,api,web -c magenta,blue,green \"pnpm embedder\" \"pnpm api\" \"pnpm web\"",
+    "stop": "docker compose --profile app --profile ingest stop",
     "infra:up": "docker compose up -d",
     "infra:down": "docker compose down",
     "embedder": "cd services/ml && uv run product-search-embedder",
@@ -10,5 +12,8 @@
     "web": "pnpm --filter @hybrid-product-search/web dev",
     "eval": "cd services/ml && uv run product-search-eval",
     "grade": "cd services/ml && uv run product-search-grade"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.5"
   }
 }
