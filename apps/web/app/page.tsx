@@ -72,21 +72,26 @@ export default function Home() {
     [run],
   );
 
-  const runImage = (file: File) =>
+  // Visual searches replace the text results, so clear the box rather than leave a query that no longer matches.
+  const runImage = (file: File) => {
+    setQuery('');
     run(async () => ({
       kind: 'single',
       title: 'Visually similar to your image',
       response: await searchImage(file, filters),
       preview: URL.createObjectURL(file),
     }));
+  };
 
-  const runSimilar = (hit: Hit) =>
+  const runSimilar = (hit: Hit) => {
+    setQuery('');
     run(async () => ({
       kind: 'single',
       title: `More like “${hit.name}”`,
       response: await similar(hit.id),
       preview: hit.image,
     }));
+  };
 
   const changeMode = (m: UiMode) => {
     setMode(m);
